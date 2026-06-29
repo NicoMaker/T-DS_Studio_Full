@@ -6,24 +6,30 @@ const SVG_LI = `<svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0
 const SVG_BE = `<svg viewBox="0 0 24 24"><path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029L23.726 17zm-5.101-7.5c-1.096 0-2.188.76-2.374 2.5h4.52c-.105-1.65-1.04-2.5-2.146-2.5zm-10.5.5h-3.125v-2h3.125v2zm.001 2v1.5h-3.126v-1.5h3.126zm-3.126 4v1.5H8.1v-1.5H5zm8.1-9C9.386 6 8 7.449 8 9.5c0 2.051 1.386 3.5 5.1 3.5 2.257 0 3.9-1.051 3.9-3.5s-1.643-3.5-3.9-3.5z"/></svg>`;
 
 export function renderProgetti(progettiData, revealObserver) {
-  const grid = document.querySelector('#progetti-grid');
-  const filterBar = document.querySelector('#filter-bar');
+  const grid = document.querySelector("#progetti-grid");
+  const filterBar = document.querySelector("#filter-bar");
   if (!grid || !progettiData) return;
   const progetti = progettiData.progetti;
 
   const total = progetti.length;
-  const countEl = document.querySelector('#progetti-count');
+  const countEl = document.querySelector("#progetti-count");
   if (countEl) {
     countEl.textContent = `${total} progetti realizzati su misura per ogni esigenza.`;
   }
 
-  const categorie = ['Tutti', ...new Set(progetti.map(p => p.categoria))];
+  const categorie = ["Tutti", ...new Set(progetti.map((p) => p.categoria))];
 
-  filterBar.innerHTML = categorie.map(cat => `
-    <button class="filter-btn${cat === 'Tutti' ? ' active' : ''}" data-cat="${cat}">${cat}</button>
-  `).join('');
+  filterBar.innerHTML = categorie
+    .map(
+      (cat) => `
+    <button class="filter-btn${cat === "Tutti" ? " active" : ""}" data-cat="${cat}">${cat}</button>
+  `,
+    )
+    .join("");
 
-  grid.innerHTML = progetti.map(p => `
+  grid.innerHTML = progetti
+    .map(
+      (p) => `
     <div class="project-card reveal" data-cat="${p.categoria}">
       <div class="project-img-wrap">
         <img src="${p.immagine_placeholder}" alt="${p.titolo}" loading="lazy">
@@ -35,85 +41,139 @@ export function renderProgetti(progettiData, revealObserver) {
         <h3 class="project-title">${p.titolo}</h3>
         <p class="project-desc">${p.descrizione}</p>
         <div class="project-card-footer">
-          <div class="project-tech">${p.tecnologie.map(t => `<span class="tech-tag">${t}</span>`).join('')}</div>
-          ${p.link ? `<a href="${p.link}" class="project-link-btn" target="_blank" rel="noopener" aria-label="Apri ${p.titolo}">Apri Sito Web ${SVG_EXTERNAL}</a>` : ''}
+          <div class="project-tech">${p.tecnologie.map((t) => `<span class="tech-tag">${t}</span>`).join("")}</div>
+          ${p.link ? `<a href="${p.link}" class="project-link-btn" target="_blank" rel="noopener" aria-label="Apri ${p.titolo}">Apri Sito Web ${SVG_EXTERNAL}</a>` : ""}
         </div>
       </div>
     </div>
-  `).join('');
+  `,
+    )
+    .join("");
 
-  let current = 'Tutti';
-  filterBar.addEventListener('click', e => {
-    const btn = e.target.closest('.filter-btn');
+  let current = "Tutti";
+  filterBar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".filter-btn");
     if (!btn) return;
     current = btn.dataset.cat;
-    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === current));
-    grid.querySelectorAll('.project-card').forEach(card => {
-      const match = current === 'Tutti' || card.dataset.cat === current;
-      card.classList.toggle('hidden', !match);
-      const badge = card.querySelector('.project-tag');
-      if (badge) badge.style.display = current === 'Tutti' ? '' : 'none';
+    filterBar
+      .querySelectorAll(".filter-btn")
+      .forEach((b) => b.classList.toggle("active", b.dataset.cat === current));
+    grid.querySelectorAll(".project-card").forEach((card) => {
+      const match = current === "Tutti" || card.dataset.cat === current;
+      card.classList.toggle("hidden", !match);
+      const badge = card.querySelector(".project-tag");
+      if (badge) badge.style.display = current === "Tutti" ? "" : "none";
     });
   });
 
   if (revealObserver) {
-    grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    grid
+      .querySelectorAll(".reveal")
+      .forEach((el) => revealObserver.observe(el));
   }
 }
 
 export function renderServizi(serviziData, revealObserver) {
-  const grid = document.querySelector('#servizi-grid');
+  const grid = document.querySelector("#servizi-grid");
   if (!grid || !serviziData) return;
-  grid.innerHTML = serviziData.servizi.map(s => `
+  grid.innerHTML = serviziData.servizi
+    .map(
+      (s) => `
     <div class="servizio-card reveal">
       <span class="servizio-icon">${s.icona}</span>
       <h3 class="servizio-title">${s.titolo}</h3>
       <p class="servizio-desc">${s.descrizione}</p>
-      <ul class="servizio-lista">${s.dettagli.map(d => `<li>${d}</li>`).join('')}</ul>
+      <ul class="servizio-lista">${s.dettagli.map((d) => `<li>${d}</li>`).join("")}</ul>
     </div>
-  `).join('');
-  if (revealObserver) grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  `,
+    )
+    .join("");
+  if (revealObserver)
+    grid
+      .querySelectorAll(".reveal")
+      .forEach((el) => revealObserver.observe(el));
 }
 
 export function renderContatti(siteData, revealObserver) {
-  const wrap = document.querySelector('#contatti-persone');
+  const wrap = document.querySelector("#contatti-persone");
   if (!wrap || !siteData) return;
-  wrap.innerHTML = siteData.team.map(persona => {
-    const c = persona.contatti;
-    const links = [
-      { href: c.whatsapp.url, icon: '💬', cls: 'whatsapp', label: c.whatsapp.label, sub: c.telefono.numero, external: true },
-      { href: c.telefono.url, icon: '📞', cls: 'phone', label: c.telefono.label, sub: c.telefono.numero, external: false },
-      { href: c.email.url, icon: '✉️', cls: 'email', label: c.email.label, sub: c.email.indirizzo, external: false },
-    ];
-    return `
+  wrap.innerHTML = siteData.team
+    .map((persona) => {
+      const c = persona.contatti;
+      const links = [
+        {
+          href: c.whatsapp.url,
+          icon: "💬",
+          cls: "whatsapp",
+          label: c.whatsapp.label,
+          sub: c.telefono.numero,
+          external: true,
+        },
+        {
+          href: c.telefono.url,
+          icon: "📞",
+          cls: "phone",
+          label: c.telefono.label,
+          sub: c.telefono.numero,
+          external: false,
+        },
+        {
+          href: c.email.url,
+          icon: "✉️",
+          cls: "email",
+          label: c.email.label,
+          sub: c.email.indirizzo,
+          external: false,
+        },
+      ];
+      return `
       <div class="persona-block reveal">
         <div class="persona-header">
           <img class="persona-foto" src="${persona.foto}" alt="Foto di ${persona.nome}" loading="lazy">
           <div><h3 class="persona-nome">${persona.nome}</h3><span class="persona-ruolo">${persona.ruolo}</span></div>
         </div>
         <div class="persona-links">
-          ${links.map(lnk => `
-            <a href="${lnk.href}" class="contatto-card" ${lnk.external ? 'target="_blank" rel="noopener"' : ''}>
+          ${links
+            .map(
+              (lnk) => `
+            <a href="${lnk.href}" class="contatto-card" ${lnk.external ? 'target="_blank" rel="noopener"' : ""}>
               <div class="contatto-icon ${lnk.cls}">${lnk.icon}</div>
               <div class="contatto-info"><span class="label">${lnk.label}</span><span class="sub">${lnk.sub}</span></div>
               <span class="contatto-arrow">→</span>
             </a>
-          `).join('')}
+          `,
+            )
+            .join("")}
         </div>
       </div>
     `;
-  }).join('');
-  if (revealObserver) wrap.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    })
+    .join("");
+  if (revealObserver)
+    wrap
+      .querySelectorAll(".reveal")
+      .forEach((el) => revealObserver.observe(el));
 }
 
 export function renderFooterSocial(siteData) {
-  const wrap = document.querySelector('#footer-social');
+  const wrap = document.querySelector("#footer-social");
   if (!wrap || !siteData?.social) return;
   const s = siteData.social;
   const links = [];
-  if (s.instagram) links.push({ href: s.instagram, label: 'Instagram', svg: SVG_IG });
-  links.push({ href: s.facebook || 'https://facebook.com/', label: 'Facebook', svg: SVG_FB });
-  if (s.linkedin) links.push({ href: s.linkedin, label: 'LinkedIn', svg: SVG_LI });
-  if (s.behance) links.push({ href: s.behance, label: 'Behance', svg: SVG_BE });
-  wrap.innerHTML = links.map(l => `<a href="${l.href}" target="_blank" rel="noopener" aria-label="${l.label}">${l.svg}</a>`).join('');
+  if (s.instagram)
+    links.push({ href: s.instagram, label: "Instagram", svg: SVG_IG });
+  links.push({
+    href: s.facebook || "https://facebook.com/",
+    label: "Facebook",
+    svg: SVG_FB,
+  });
+  if (s.linkedin)
+    links.push({ href: s.linkedin, label: "LinkedIn", svg: SVG_LI });
+  if (s.behance) links.push({ href: s.behance, label: "Behance", svg: SVG_BE });
+  wrap.innerHTML = links
+    .map(
+      (l) =>
+        `<a href="${l.href}" target="_blank" rel="noopener" aria-label="${l.label}">${l.svg}</a>`,
+    )
+    .join("");
 }
