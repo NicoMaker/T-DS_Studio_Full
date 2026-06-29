@@ -1,3 +1,8 @@
+/* ============================================
+   animations.js — Tutte le animazioni extra
+   ============================================ */
+
+// ---- PARTICLLE ----
 export function initParticles() {
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
@@ -62,10 +67,15 @@ export function initParticles() {
   animate();
 }
 
+// ---- TYPEWRITER ----
 export function initTypewriter() {
   const el = document.querySelector('.typewriter');
   if (!el) return;
-  const words = ['Il digitale che fa la <span class="accent">differenza</span>', 'Innovazione e <span class="accent">creatività</span>', 'Soluzioni <span class="accent">su misura</span>'];
+  const words = [
+    'Il digitale che fa la <span class="accent">differenza</span>',
+    'Innovazione e <span class="accent">creatività</span>',
+    'Soluzioni <span class="accent">su misura</span>'
+  ];
   let wordIndex = 0;
   let charIndex = 0;
   let isDeleting = false;
@@ -95,14 +105,18 @@ export function initTypewriter() {
   type();
 }
 
+// ---- COUNTER ANIMATO (ora usa il data-count al momento della chiamata) ----
 export function initCounter() {
   const counters = document.querySelectorAll('.counter');
   if (!counters.length) return;
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const el = entry.target;
-        const target = parseInt(el.parentElement.parentElement.dataset.count, 10);
+        const parent = el.closest('.stat-item');
+        if (!parent) return;
+        const target = parseInt(parent.dataset.count, 10) || 0;
         let current = 0;
         const increment = Math.ceil(target / 60);
         const timer = setInterval(() => {
@@ -114,9 +128,11 @@ export function initCounter() {
       }
     });
   }, { threshold: 0.5 });
+
   counters.forEach(c => observer.observe(c));
 }
 
+// ---- PARALLASSE HERO ----
 export function initParallax() {
   const hero = document.querySelector('#home');
   if (!hero) return;
@@ -129,6 +145,7 @@ export function initParallax() {
   }, { passive: true });
 }
 
+// ---- MOUSE GLOW ----
 export function initMouseGlow() {
   const glow = document.createElement('div');
   glow.id = 'mouse-glow';

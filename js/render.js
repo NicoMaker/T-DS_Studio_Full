@@ -11,7 +11,6 @@ export function renderProgetti(progettiData, revealObserver) {
   if (!grid || !progettiData) return;
   const progetti = progettiData.progetti;
 
-  // ---- CONTATORE ----
   const total = progetti.length;
   const countEl = document.querySelector('#progetti-count');
   if (countEl) {
