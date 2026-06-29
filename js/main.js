@@ -49,7 +49,9 @@ import {
     const dropdownMenu = document.querySelector(".nav-dropdown-menu");
     if (dropdownMenu && progettiData) {
       // Estraggo le categorie uniche
-      const categorieSet = new Set(progettiData.progetti.map((p) => p.categoria));
+      const categorieSet = new Set(
+        progettiData.progetti.map((p) => p.categoria),
+      );
       const categorie = ["Tutti", ...Array.from(categorieSet)];
 
       // Svuoto il menu (tranne eventuali voci fisse, ma non ce ne sono)

@@ -33,7 +33,7 @@ export function renderProgetti(progettiData, revealObserver) {
   grid.innerHTML = progetti
     .map(
       (p) => `
-    <div class="project-card reveal" data-cat="${p.categoria}" data-search="${p.titolo} ${p.descrizione} ${p.tecnologie.join(' ')}">
+    <div class="project-card reveal" data-cat="${p.categoria}" data-search="${p.titolo} ${p.descrizione} ${p.tecnologie.join(" ")}">
       <div class="project-img-wrap">
         <img src="${p.immagine_placeholder}" alt="${p.titolo}" loading="lazy">
         <div class="project-overlay"></div>
