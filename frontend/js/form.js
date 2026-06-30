@@ -44,7 +44,9 @@ const API_URL = '/api/contatti'
   }
 
   function clearFieldErrors() {
-    form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'))
+    form
+      .querySelectorAll('.form-group')
+      .forEach(g => g.classList.remove('error'))
   }
 
   function validateClientSide(data) {
@@ -72,13 +74,19 @@ const API_URL = '/api/contatti'
     const emailVal = (data.email || '').trim()
     if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
       errori.push("L'indirizzo email non è valido.")
-      form.querySelector('[name="email"]')?.closest('.form-group')?.classList.add('error')
+      form
+        .querySelector('[name="email"]')
+        ?.closest('.form-group')
+        ?.classList.add('error')
     }
 
     const telDigits = (data.telefono || '').replace(/\D/g, '')
     if (data.telefono && telDigits.length < 6) {
       errori.push('Il numero di cellulare non è valido.')
-      form.querySelector('[name="telefono"]')?.closest('.form-group')?.classList.add('error')
+      form
+        .querySelector('[name="telefono"]')
+        ?.closest('.form-group')
+        ?.classList.add('error')
     }
 
     return errori
@@ -115,7 +123,8 @@ const API_URL = '/api/contatti'
 
       if (res.ok && result.ok) {
         showFeedback(
-          result.message || 'Messaggio inviato con successo! Ti risponderemo al più presto.',
+          result.message ||
+            'Messaggio inviato con successo! Ti risponderemo al più presto.',
           'success'
         )
         form.reset()
@@ -124,7 +133,7 @@ const API_URL = '/api/contatti'
         const msg =
           result.errori && result.errori.length
             ? result.errori.join(' ')
-            : 'Si è verificato un errore durante l\'invio. Riprova più tardi.'
+            : "Si è verificato un errore durante l'invio. Riprova più tardi."
         showFeedback(msg, 'error')
       }
     } catch (err) {

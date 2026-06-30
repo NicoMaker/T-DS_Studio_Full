@@ -46,7 +46,7 @@ transporter.verify(err => {
   if (err) {
     console.error('❌ Errore configurazione SMTP:', err.message)
   } else {
-    console.log('✅ Server SMTP pronto per l\'invio email')
+    console.log("✅ Server SMTP pronto per l'invio email")
   }
 })
 
@@ -71,7 +71,7 @@ function validaForm(body) {
   // Validazione email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (body.email && !emailRegex.test(body.email.trim())) {
-    errori.push('L\'indirizzo email non è valido.')
+    errori.push("L'indirizzo email non è valido.")
   }
 
   // Validazione telefono (numeri, spazi, +, -, parentesi — minimo 6 cifre)
@@ -167,7 +167,9 @@ app.post('/api/contatti', async (req, res) => {
     console.error('❌ Errore invio email:', err)
     return res.status(500).json({
       ok: false,
-      errori: ['Si è verificato un errore durante l\'invio. Riprova più tardi o contattaci telefonicamente.'],
+      errori: [
+        "Si è verificato un errore durante l'invio. Riprova più tardi o contattaci telefonicamente.",
+      ],
     })
   }
 })
