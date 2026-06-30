@@ -1,8 +1,0 @@
-form email diretta in form con i seguenti campi
-
-nome 
-cognnome 
-email
-servizio desiderato
-numero di cellulare
-messaggio 

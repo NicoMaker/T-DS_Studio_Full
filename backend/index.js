@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }))
 // Serve il frontend statico (index.html, servizio.html, css, js, data, img)
 // Cartella principale del sito = una directory sopra /server
 const path = require('path')
-app.use(express.static(path.join(__dirname, '..')))
+app.use(express.static(path.join(__dirname, '../frontend')))
 
 // ---------- TRANSPORTER NODEMAILER ----------
 const transporter = nodemailer.createTransport({
