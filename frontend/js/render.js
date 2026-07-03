@@ -146,7 +146,11 @@ export function renderContatti(siteData, revealObserver) {
       <div class="persona-block reveal">
         <div class="persona-header">
           <img class="persona-foto" src="${persona.foto}" alt="Foto di ${persona.nome}" loading="lazy">
-          <div><h3 class="persona-nome">${persona.nome}</h3><span class="persona-ruolo">${persona.ruolo}</span></div>
+          <div>
+            <h3 class="persona-nome">${persona.nome}</h3>
+            <span class="persona-ruolo">${persona.ruolo}</span>
+            ${persona.piva ? `<span class="persona-piva">P.IVA ${persona.piva}</span>` : ''}
+          </div>
         </div>
         <div class="persona-links">
           ${links

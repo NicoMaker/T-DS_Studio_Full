@@ -13,6 +13,7 @@
       "nome": "Marco Bianchi",
       "ruolo": "Sviluppo & Informatica",
       "foto": "https://i.pravatar.cc/160?img=11",
+      "piva": "IT01234567890",
       "contatti": {
         "whatsapp": {
           "numero": "+393331234567",
@@ -36,6 +37,7 @@
       "nome": "Giulia Rossi",
       "ruolo": "Design & Grafica",
       "foto": "https://i.pravatar.cc/160?img=47",
+      "piva": "IT09876543210",
       "contatti": {
         "whatsapp": {
           "numero": "+393339876543",

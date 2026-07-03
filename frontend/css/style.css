@@ -1034,110 +1034,131 @@ img {
 .contatti-persone-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 28px;
 }
 .persona-block {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 32px 28px;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(35, 42, 22, 0.05);
   transition:
-    transform 0.4s,
-    box-shadow 0.4s;
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .persona-block:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow);
+  box-shadow: 0 20px 44px rgba(35, 42, 22, 0.12);
 }
 .persona-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   margin-bottom: 24px;
-  padding-bottom: 20px;
+  padding-bottom: 22px;
   border-bottom: 1px solid var(--border);
 }
 .persona-foto {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(91, 123, 41, 0.35);
+  border: 3px solid var(--blu-deep);
+  outline: 2px solid rgba(91, 123, 41, 0.3);
   flex-shrink: 0;
   background: var(--blu-mid);
 }
 .persona-nome {
   font-size: 1.05rem;
   color: var(--bianco);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .persona-ruolo {
-  font-family: var(--font-mono);
+  display: inline-block;
+  font-family: var(--font-display);
   font-size: 0.72rem;
-  color: var(--blu-glow);
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--blu-accent);
+  background: rgba(91, 123, 41, 0.1);
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+.persona-piva {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--grigio);
+  margin-top: 8px;
+  letter-spacing: 0.02em;
 }
 .persona-links {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 .contatto-card {
   display: flex;
   align-items: center;
-  gap: 20px;
-  background: rgba(17, 34, 64, 0.5);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 18px;
+  gap: 16px;
+  background: var(--blu-deep);
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 13px 16px;
   transition: var(--transition);
   text-decoration: none;
 }
 .contatto-card:hover {
-  border-color: rgba(91, 123, 41, 0.35);
-  transform: translateX(6px);
-  box-shadow: var(--shadow);
+  background: var(--blu-mid);
+  border-color: rgba(91, 123, 41, 0.3);
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(35, 42, 22, 0.08);
 }
 .contatto-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.contatto-card:hover .contatto-icon {
+  transform: scale(1.1);
 }
 .contatto-icon.whatsapp {
-  background: rgba(37, 211, 102, 0.15);
+  background: rgba(37, 211, 102, 0.16);
 }
 .contatto-icon.phone {
-  background: rgba(91, 123, 41, 0.15);
+  background: rgba(91, 123, 41, 0.14);
 }
 .contatto-icon.email {
-  background: rgba(224, 121, 26, 0.15);
+  background: rgba(224, 121, 26, 0.14);
 }
 .contatto-info .label {
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--bianco);
   display: block;
   margin-bottom: 2px;
 }
 .contatto-info .sub {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--grigio);
 }
 .contatto-arrow {
   margin-left: auto;
-  color: var(--grigio);
+  color: var(--blu-accent);
   font-size: 1.1rem;
+  opacity: 0;
+  transform: translateX(-4px);
   transition: var(--transition);
 }
 .contatto-card:hover .contatto-arrow {
-  color: var(--blu-accent);
-  transform: translateX(4px);
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* ---------- FOOTER ---------- */
