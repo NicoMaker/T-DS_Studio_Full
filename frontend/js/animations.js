@@ -11,31 +11,68 @@ function hidePageLoader() {
   const loader = document.getElementById("page-loader");
   if (!loader) return;
   loader.classList.add("hidden");
-  setTimeout(() => loader.remove(), 700);
+  setTimeout(() => loader.remove(), 450);
 }
 
+// Il loader si chiude solo quando SIA la sequenza video+scritta è finita
+// SIA i dati del sito sono pronti (chiamato da main.js). Così, anche se i
+// dati arrivano subito, il video ha comunque il tempo di andare in scena.
+let introSequenceDone = false;
+let siteDataReady = false;
+
+function tryHidePageLoader() {
+  if (introSequenceDone && siteDataReady) hidePageLoader();
+}
+
+function markSiteDataReady() {
+  siteDataReady = true;
+  tryHidePageLoader();
+}
+window.markSiteDataReady = markSiteDataReady;
+
 // ── Video di apertura (opzionale) ────────────────────────────
-// Se in /video/intro.mp4 non c'è nessun file, il video sparisce e resta
-// la sola scritta animata "Nooo." come prima. Basta metterci un file per
-// attivarlo, senza toccare il codice.
+// Sequenza voluta: parte solo il video, a video finito compare la scritta
+// "T-DS." e il video resta fermo. Se in /video/intro.mp4 non c'è nessun
+// file, la scritta compare subito senza aspettare nulla.
 function initIntroVideo() {
   const video = document.getElementById("intro-video");
   const loader = document.getElementById("page-loader");
-  if (!video || !loader) return;
+  if (!video || !loader) {
+    introSequenceDone = true;
+    tryHidePageLoader();
+    return;
+  }
 
-  const nascondi = () => {
+  const mostraScritta = () => {
+    if (loader.classList.contains("show-word")) return;
+    loader.classList.add("show-word");
+    // Scritta breve e immediata: il sito parte quasi subito dopo.
+    setTimeout(() => {
+      introSequenceDone = true;
+      tryHidePageLoader();
+    }, 350);
+  };
+
+  const nascondiVideo = () => {
     video.style.display = "none";
+    mostraScritta();
   };
 
   // Con "autoplay" il video parte già durante il parsing dell'HTML:
   // l'errore (file mancante) può essere scattato prima che questo
   // script venisse eseguito, quindi controlliamo anche lo stato attuale.
   if (video.error || video.networkState === 3 /* NETWORK_NO_SOURCE */) {
-    nascondi();
-  } else {
-    video.addEventListener("error", nascondi);
+    nascondiVideo();
+    return;
   }
+  video.addEventListener("error", nascondiVideo);
   video.addEventListener("playing", () => loader.classList.add("has-video"));
+  // Il video non è più in loop: quando finisce di girare (una volta sola)
+  // resta fermo sull'ultimo fotogramma e a quel punto compare la scritta.
+  video.addEventListener("ended", mostraScritta);
+  // Rete di sicurezza: se per qualche motivo il video non parte o non
+  // finisce mai, mostra comunque la scritta dopo un tempo massimo.
+  setTimeout(mostraScritta, 6000);
 }
 
 // ── Video di sfondo nella hero (opzionale) ───────────────────

@@ -40,11 +40,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     initParallax();
     initMagneticButtons();
     initHeroGlow();
-    hidePageLoader();
+    // Non chiude subito il loader: aspetta anche che la sequenza
+    // video + scritta del loader sia finita (vedi animations.js).
+    markSiteDataReady();
   }
 });
 
 // Ulteriore correzione di sicurezza a caricamento completato (font/immagini
 // possono ancora spostare leggermente il layout dopo il primo controllo)
 window.addEventListener("load", scrollToCurrentHash);
-

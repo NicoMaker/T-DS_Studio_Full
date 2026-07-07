@@ -25,22 +25,21 @@
   </head>
   <body>
     <!-- ========== BARRA DI CARICAMENTO ========== -->
-    <!-- Per usare un video di apertura personalizzato, basta mettere un
-         file "intro.mp4" nella cartella /video: parte da solo, senza
-         toccare il codice. Se il file non c'è, resta la sola scritta. -->
+    <!-- Sequenza: parte solo il video, poi (a video finito) compare la
+         scritta e il video si ferma. Se il file "intro.mp4" non c'è,
+         la scritta compare subito. -->
     <div class="page-loader" id="page-loader" aria-hidden="true">
       <video
         class="loader-video"
         id="intro-video"
         autoplay
         muted
-        loop
         playsinline
         preload="auto"
       >
         <source src="video/Intro.mp4" type="video/mp4" />
       </video>
-      <span class="loader-word">Nooo<span class="loader-dot">.</span></span>
+      <span class="loader-word">T-DS<span class="loader-dot">.</span></span>
     </div>
 
     <!-- ========== NAVBAR ========== -->
