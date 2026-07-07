@@ -1,175 +1,109 @@
-/* ============================================
-   animations.js — Tutte le animazioni extra
-   ============================================ */
+// ============================================================
+// animations.js — Reveal allo scroll, contatori, parallax, loader
+// ============================================================
 
-// ---- PARTICLLE ----
-export function initParticles() {
-  const canvas = document.getElementById('particles-canvas')
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-  let width, height
-  let particles = []
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
 
-  function resize() {
-    width = canvas.width = window.innerWidth
-    height = canvas.height = window.innerHeight
-  }
-  window.addEventListener('resize', resize)
-  resize()
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width
-      this.y = Math.random() * height
-      this.size = Math.random() * 2 + 0.5
-      this.speedX = (Math.random() - 0.5) * 0.5
-      this.speedY = (Math.random() - 0.5) * 0.5
-      this.opacity = Math.random() * 0.5 + 0.2
-    }
-    update() {
-      this.x += this.speedX
-      this.y += this.speedY
-      if (this.x < 0 || this.x > width) this.speedX *= -1
-      if (this.y < 0 || this.y > height) this.speedY *= -1
-    }
-    draw() {
-      ctx.beginPath()
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(91, 123, 41, ${this.opacity * 0.5})`
-      ctx.fill()
-    }
-  }
-
-  for (let i = 0; i < 80; i++) {
-    particles.push(new Particle())
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height)
-    particles.forEach(p => {
-      p.update()
-      p.draw()
-    })
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x
-        const dy = particles[i].y - particles[j].y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < 120) {
-          ctx.beginPath()
-          ctx.moveTo(particles[i].x, particles[i].y)
-          ctx.lineTo(particles[j].x, particles[j].y)
-          ctx.strokeStyle = `rgba(91, 123, 41, ${0.08 * (1 - dist / 120)})`
-          ctx.lineWidth = 0.5
-          ctx.stroke()
-        }
-      }
-    }
-    requestAnimationFrame(animate)
-  }
-  animate()
+// ── Loader iniziale ─────────────────────────────────────────
+function hidePageLoader() {
+  const loader = document.getElementById("page-loader");
+  if (!loader) return;
+  loader.classList.add("hidden");
+  setTimeout(() => loader.remove(), 700);
 }
 
-// ---- TYPEWRITER ----
-export function initTypewriter() {
-  const el = document.querySelector('.typewriter')
-  if (!el) return
-  const words = [
-    'Il digitale che fa la <span class="accent">differenza</span>',
-    'Innovazione e <span class="accent">creatività</span>',
-    'Soluzioni <span class="accent">su misura</span>',
-  ]
-  let wordIndex = 0
-  let charIndex = 0
-  let isDeleting = false
-  let currentText = ''
-
-  function type() {
-    const fullText = words[wordIndex]
-    if (isDeleting) {
-      currentText = fullText.substring(0, charIndex - 1)
-      charIndex--
-    } else {
-      currentText = fullText.substring(0, charIndex + 1)
-      charIndex++
-    }
-    el.innerHTML = currentText
-    if (!isDeleting && charIndex === fullText.length) {
-      isDeleting = true
-      setTimeout(type, 2000)
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false
-      wordIndex = (wordIndex + 1) % words.length
-      setTimeout(type, 400)
-    } else {
-      setTimeout(type, isDeleting ? 60 : 120)
-    }
-  }
-  type()
-}
-
-// ---- COUNTER ANIMATO (ora usa il data-count al momento della chiamata) ----
-export function initCounter() {
-  const counters = document.querySelectorAll('.counter')
-  if (!counters.length) return
-
+// ── Reveal allo scroll ──────────────────────────────────────
+function initReveal() {
   const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
+    (entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const el = entry.target
-          const parent = el.closest('.stat-item')
-          if (!parent) return
-          const target = parseInt(parent.dataset.count, 10) || 0
-          let current = 0
-          const increment = Math.ceil(target / 60)
-          const timer = setInterval(() => {
-            current += increment
-            if (current >= target) {
-              current = target
-              clearInterval(timer)
-            }
-            el.textContent = current
-          }, 20)
-          observer.unobserve(el)
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
         }
-      })
+      });
     },
-    { threshold: 0.5 }
-  )
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+  );
 
-  counters.forEach(c => observer.observe(c))
+  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 }
 
-// ---- PARALLASSE HERO ----
-export function initParallax() {
-  const hero = document.querySelector('#home')
-  if (!hero) return
+// ── Contatori animati (sezione numeri) ─────────────────────
+function initCounters() {
+  const counters = document.querySelectorAll("[data-count]");
+  if (!counters.length) return;
+
+  const animate = (el) => {
+    const target = Number(el.dataset.count);
+    const suffisso = el.dataset.suffix || "";
+    if (prefersReducedMotion) {
+      el.textContent = target + suffisso;
+      return;
+    }
+    const durata = 1600;
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min((now - start) / durata, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      el.textContent = Math.round(target * eased) + suffisso;
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          animate(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+  counters.forEach((c) => obs.observe(c));
+}
+
+// ── Parallax leggero sull'hero ──────────────────────────────
+function initParallax() {
+  if (prefersReducedMotion) return;
+  const media = document.getElementById("hero-media");
+  if (!media) return;
+
+  let ticking = false;
   window.addEventListener(
-    'scroll',
+    "scroll",
     () => {
-      const scrolled = window.scrollY
-      const bg = hero.querySelector('.hero-bg')
-      const grid = hero.querySelector('.hero-grid')
-      if (bg)
-        bg.style.transform = `translateY(${scrolled * 0.05}px) scale(1.02)`
-      if (grid) grid.style.transform = `translateY(${scrolled * 0.02}px)`
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y < window.innerHeight * 1.2) {
+          media.style.transform = `translateY(${y * 0.22}px)`;
+        }
+        ticking = false;
+      });
     },
-    { passive: true }
-  )
+    { passive: true },
+  );
 }
 
-// ---- MOUSE GLOW ----
-export function initMouseGlow() {
-  const glow = document.createElement('div')
-  glow.id = 'mouse-glow'
-  document.body.appendChild(glow)
-  const moveGlow = e => {
-    glow.style.left = e.clientX + 'px'
-    glow.style.top = e.clientY + 'px'
-  }
-  document.addEventListener('mousemove', moveGlow)
-  document.addEventListener('touchstart', () => {
-    glow.style.display = 'none'
-  })
+// ── Marquee (duplicazione contenuto per loop infinito) ──────
+function buildMarquee(parole) {
+  const track = document.getElementById("marquee-track");
+  if (!track || !parole || !parole.length) return;
+
+  const blocco = parole
+    .map(
+      (p) =>
+        `<span class="marquee-item">${p} <span class="marquee-sep">✳</span></span>`,
+    )
+    .join("");
+
+  // Due copie identiche per un loop continuo (translateX -50%)
+  track.innerHTML = blocco + blocco;
 }

@@ -1,16 +1,28 @@
+// ============================================================
+// utils/validators.js — Validazione lato server del form
+// (specchio delle regole del frontend: mai fidarsi del client)
+// ============================================================
+
+// Email valida: nome@dominio.tld
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+// Telefono internazionale: "+" seguito da 8–15 cifre (standard E.164)
+const PHONE_REGEX = /^\+\d{8,15}$/;
+
 /**
- * Valida i campi del form contatti
+ * Valida i campi del form contatti.
  * @param {Object} body - req.body
- * @returns {string[]} array di messaggi di errore
+ * @returns {string[]} array di messaggi di errore (vuoto = tutto ok)
  */
 function validaForm(body) {
   const errori = [];
+
   const campiObbligatori = {
     nome: 'Nome',
     cognome: 'Cognome',
     email: 'Email',
-    servizio: 'Servizio desiderato',
     telefono: 'Numero di cellulare',
+    servizio: 'Servizio desiderato',
     messaggio: 'Messaggio',
   };
 
@@ -20,21 +32,42 @@ function validaForm(body) {
     }
   }
 
-  // Validazione email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (body.email && !emailRegex.test(body.email.trim())) {
+  // ── Email: SOLO indirizzi validi ──
+  if (body.email && !EMAIL_REGEX.test(String(body.email).trim())) {
     errori.push("L'indirizzo email non è valido.");
   }
 
-  // Validazione telefono (numeri, spazi, +, -, parentesi — minimo 6 cifre)
-  const telefonoDigits = body.telefono ? body.telefono.replace(/\D/g, '') : '';
-  if (body.telefono && telefonoDigits.length < 6) {
-    errori.push('Il numero di cellulare non è valido.');
+  // ── Telefono: solo cifre con prefisso internazionale ──
+  if (body.telefono) {
+    const telefono = String(body.telefono).replace(/\s/g, '');
+    if (!PHONE_REGEX.test(telefono)) {
+      errori.push(
+        'Il numero di cellulare non è valido: sono ammesse solo cifre con prefisso internazionale (es. +39 339 1234567).'
+      );
+    }
+  }
+
+  // ── Messaggio: lunghezza minima e massima ──
+  if (body.messaggio) {
+    const msg = String(body.messaggio).trim();
+    if (msg.length < 10) errori.push('Il messaggio è troppo corto (minimo 10 caratteri).');
+    if (msg.length > 5000) errori.push('Il messaggio è troppo lungo (massimo 5000 caratteri).');
   }
 
   return errori;
 }
 
-module.exports = {
-  validaForm,
-};
+/**
+ * Sanifica una stringa per l'inserimento in HTML email
+ * (previene injection nei template).
+ */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+module.exports = { validaForm, escapeHtml, EMAIL_REGEX, PHONE_REGEX };

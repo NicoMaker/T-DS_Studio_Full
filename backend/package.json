@@ -1,7 +1,7 @@
 {
   "name": "nooo-agency-server",
-  "version": "1.0.0",
-  "description": "Backend Node.js per l'invio email del form contatti di Nooo Agency (Express + Nodemailer)",
+  "version": "2.0.0",
+  "description": "Backend Node.js del sito Nooo Agency: form contatti via email (Express + Nodemailer)",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

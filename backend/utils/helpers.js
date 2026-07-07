@@ -1,21 +1,9 @@
+// ============================================================
+// utils/helpers.js — Utility varie (IP locale/pubblico)
+// ============================================================
 const os = require('os');
 const https = require('https');
 
-/**
- * Escape dei caratteri HTML per prevenire XSS
- */
-function escapeHtml(str = '') {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-/**
- * Ottiene l'IP locale della macchina
- */
 function getLocalIP() {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
@@ -28,23 +16,16 @@ function getLocalIP() {
   return '127.0.0.1';
 }
 
-/**
- * Ottiene l'IP pubblico tramite ipify.org
- */
 function getPublicIP() {
   return new Promise((resolve) => {
     https
-      .get('https://api.ipify.org', (resp) => {
+      .get('https://api.ipify.org', (res) => {
         let data = '';
-        resp.on('data', (chunk) => (data += chunk));
-        resp.on('end', () => resolve(data || 'N/D'));
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => resolve(data.trim()));
       })
-      .on('error', () => resolve('N/D'));
+      .on('error', () => resolve('non disponibile'));
   });
 }
 
-module.exports = {
-  escapeHtml,
-  getLocalIP,
-  getPublicIP,
-};
+module.exports = { getLocalIP, getPublicIP };

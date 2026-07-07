@@ -1,7 +1,7 @@
-const sendAzienda = require('./sendAzienda');
-const sendCliente = require('./sendCliente');
-
+// ============================================================
+// services/email/index.js — Punto d'ingresso del servizio email
+// ============================================================
 module.exports = {
-  sendAzienda,
-  sendCliente,
+  sendAzienda: require('./sendAzienda'),
+  sendCliente: require('./sendCliente'),
 };

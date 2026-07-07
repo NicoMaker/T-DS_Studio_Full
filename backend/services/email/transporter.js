@@ -1,3 +1,6 @@
+// ============================================================
+// services/email/transporter.js — Connessione SMTP (Nodemailer)
+// ============================================================
 const nodemailer = require('nodemailer');
 const config = require('../../config');
 
@@ -11,18 +14,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Verifica all'avvio
-transporter.verify((err) => {
-  if (err) {
-    console.error('❌ Errore configurazione SMTP:', err.message);
-  } else {
-    console.log('✅ Server SMTP pronto per l\'invio email');
-  }
-});
+// Verifica la connessione all'avvio (solo log, non blocca il server)
+transporter
+  .verify()
+  .then(() => console.log('✉️  SMTP pronto: le email possono essere inviate.'))
+  .catch((err) =>
+    console.warn('⚠️  SMTP non configurato o non raggiungibile:', err.message),
+  );
 
-const mailFrom = `"${config.mailFrom.name}" <${config.mailFrom.email}>`;
-
-module.exports = {
-  transporter,
-  mailFrom,
-};
+module.exports = transporter;

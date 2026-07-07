@@ -1,18 +1,21 @@
-/* ============================================
-   data.js — Caricamento dati JSON
-   ============================================ */
+// ============================================================
+// data.js — Caricamento centralizzato dei file JSON
+// ============================================================
 
-export async function loadJSON(path) {
-  const res = await fetch(path)
-  if (!res.ok) throw new Error(`JSON load failed: ${path}`)
-  return res.json()
-}
+const SiteData = {
+  async load(nome) {
+    const res = await fetch(`data/${nome}.json`);
+    if (!res.ok) throw new Error(`Impossibile caricare data/${nome}.json (HTTP ${res.status})`);
+    return res.json();
+  },
 
-export async function loadAllData() {
-  const [siteData, progettiData, serviziData] = await Promise.all([
-    loadJSON('data/site.json'),
-    loadJSON('data/progetti.json'),
-    loadJSON('data/servizi.json'),
-  ])
-  return { siteData, progettiData, serviziData }
-}
+  async loadAll() {
+    const [site, servizi, progetti, video] = await Promise.all([
+      this.load("site"),
+      this.load("servizi"),
+      this.load("progetti"),
+      this.load("video"),
+    ]);
+    return { site, servizi, progetti, video };
+  },
+};

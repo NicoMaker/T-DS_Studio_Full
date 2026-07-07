@@ -1,151 +1,153 @@
-/* ============================================
-   form.js — Gestione form contatti
-   Popola la select "servizio", valida i campi
-   e invia i dati al backend Node.js (Nodemailer)
-   ============================================ */
+// ============================================================
+// form.js — Validazione live e invio del form contatti
+// Email: accetta SOLO indirizzi email validi
+// Telefono: gestito da phone-input.js (solo cifre + prefisso)
+// ============================================================
 
-import { loadJSON } from './data.js'
+const FormContatti = {
+  form: null,
+  API_URL: "/api/contatti",
 
-// URL dell'API backend.
-// In sviluppo locale: http://localhost:3000/api/contatti
-// In produzione: stesso dominio del sito -> /api/contatti
-const API_URL = '/api/contatti'
+  // Regex email rigorosa (nome@dominio.tld)
+  EMAIL_REGEX: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 
-;(async function initForm() {
-  const form = document.getElementById('form-contatti')
-  if (!form) return
+  init() {
+    this.form = document.getElementById("form-contatti");
+    if (!this.form) return;
 
-  const selectServizio = document.getElementById('f-servizio')
-  const feedbackEl = document.getElementById('form-feedback')
-  const submitBtn = document.getElementById('form-submit-btn')
+    PhoneInput.init();
 
-  // --- Popolo la select "Servizio desiderato" dai dati servizi.json ---
-  try {
-    const serviziData = await loadJSON('data/servizi.json')
-    if (selectServizio && serviziData?.servizi) {
-      serviziData.servizi.forEach(s => {
-        const opt = document.createElement('option')
-        opt.value = s.titolo
-        opt.textContent = `${s.icona} ${s.titolo}`
-        selectServizio.appendChild(opt)
-      })
-      const altro = document.createElement('option')
-      altro.value = 'Altro / non so ancora'
-      altro.textContent = '✨ Altro / non so ancora'
-      selectServizio.appendChild(altro)
-    }
-  } catch (err) {
-    console.error('Errore caricamento servizi per il form:', err)
-  }
+    // Validazione live quando l'utente esce dal campo
+    ["nome", "cognome", "email", "servizio", "messaggio"].forEach((campo) => {
+      const el = this.form.elements[campo];
+      if (!el) return;
+      el.addEventListener("blur", () => this.validaCampo(campo));
+      el.addEventListener("input", () => this.pulisciErrore(campo));
+    });
 
-  function showFeedback(message, type) {
-    feedbackEl.textContent = message
-    feedbackEl.className = `form-feedback ${type} visible`
-  }
+    const tel = document.getElementById("f-telefono");
+    tel.addEventListener("blur", () => this.validaCampo("telefono"));
+    tel.addEventListener("input", () => this.pulisciErrore("telefono"));
 
-  function clearFieldErrors() {
-    form
-      .querySelectorAll('.form-group')
-      .forEach(g => g.classList.remove('error'))
-  }
-
-  function validateClientSide(data) {
-    const errori = []
-    const campi = {
-      nome: 'Nome',
-      cognome: 'Cognome',
-      email: 'Email',
-      servizio: 'Servizio desiderato',
-      telefono: 'Numero di cellulare',
-      messaggio: 'Messaggio',
-    }
-
-    clearFieldErrors()
-
-    for (const [campo, label] of Object.entries(campi)) {
-      const value = (data[campo] || '').trim()
-      if (!value) {
-        errori.push(`Il campo "${label}" è obbligatorio.`)
-        const input = form.querySelector(`[name="${campo}"]`)
-        if (input) input.closest('.form-group')?.classList.add('error')
+    // Blocca caratteri non ammessi nell'email in tempo reale (niente spazi)
+    const email = document.getElementById("f-email");
+    email.addEventListener("beforeinput", (e) => {
+      if (e.inputType.startsWith("insert") && e.data && /\s/.test(e.data)) {
+        e.preventDefault();
       }
+    });
+
+    this.form.addEventListener("submit", (e) => this.invia(e));
+  },
+
+  // ── Validazione singolo campo ──
+  validaCampo(campo) {
+    const el = this.form.elements[campo];
+    const valore = el ? String(el.value).trim() : "";
+    let errore = "";
+
+    switch (campo) {
+      case "nome":
+        if (!valore) errore = "Il nome è obbligatorio.";
+        break;
+      case "cognome":
+        if (!valore) errore = "Il cognome è obbligatorio.";
+        break;
+      case "email":
+        if (!valore) errore = "L'email è obbligatoria.";
+        else if (!this.EMAIL_REGEX.test(valore))
+          errore = "Inserisci un indirizzo email valido (es. nome@esempio.it).";
+        break;
+      case "telefono":
+        if (!PhoneInput.isValid()) errore = PhoneInput.messaggioErrore();
+        break;
+      case "servizio":
+        if (!valore) errore = "Scegli il servizio che ti interessa.";
+        break;
+      case "messaggio":
+        if (!valore) errore = "Scrivici due righe sul tuo progetto.";
+        else if (valore.length < 10)
+          errore = "Il messaggio è troppo corto (minimo 10 caratteri).";
+        break;
     }
 
-    const emailVal = (data.email || '').trim()
-    if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-      errori.push("L'indirizzo email non è valido.")
-      form
-        .querySelector('[name="email"]')
-        ?.closest('.form-group')
-        ?.classList.add('error')
+    this.mostraErrore(campo, errore);
+    return !errore;
+  },
+
+  mostraErrore(campo, errore) {
+    const span = this.form.querySelector(`[data-error-for="${campo}"]`);
+    const wrapper = span ? span.closest(".form-field") : null;
+    if (span) span.textContent = errore;
+    if (wrapper) wrapper.classList.toggle("invalid", Boolean(errore));
+  },
+
+  pulisciErrore(campo) {
+    this.mostraErrore(campo, "");
+  },
+
+  validaTutto() {
+    const campi = ["nome", "cognome", "email", "telefono", "servizio", "messaggio"];
+    let ok = true;
+    campi.forEach((c) => {
+      if (!this.validaCampo(c)) ok = false;
+    });
+    return ok;
+  },
+
+  // ── Invio ──
+  async invia(e) {
+    e.preventDefault();
+    const esito = document.getElementById("form-esito");
+    esito.className = "form-esito";
+    esito.textContent = "";
+
+    if (!this.validaTutto()) {
+      const primoErrore = this.form.querySelector(".form-field.invalid input, .form-field.invalid select, .form-field.invalid textarea");
+      if (primoErrore) primoErrore.focus();
+      return;
     }
 
-    const telDigits = (data.telefono || '').replace(/\D/g, '')
-    if (data.telefono && telDigits.length < 6) {
-      errori.push('Il numero di cellulare non è valido.')
-      form
-        .querySelector('[name="telefono"]')
-        ?.closest('.form-group')
-        ?.classList.add('error')
-    }
+    const btn = document.getElementById("btn-invia");
+    btn.classList.add("loading");
 
-    return errori
-  }
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault()
-    feedbackEl.className = 'form-feedback'
-    feedbackEl.textContent = ''
-
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData.entries())
-
-    const erroriClient = validateClientSide(data)
-    if (erroriClient.length) {
-      showFeedback(erroriClient.join(' '), 'error')
-      return
-    }
-
-    submitBtn.disabled = true
-    submitBtn.classList.add('loading')
-    const btnTextEl = submitBtn.querySelector('.btn-text')
-    const originalText = btnTextEl.textContent
-    btnTextEl.textContent = 'Invio in corso…'
+    const payload = {
+      nome: this.form.elements.nome.value.trim(),
+      cognome: this.form.elements.cognome.value.trim(),
+      email: this.form.elements.email.value.trim(),
+      telefono: PhoneInput.getFullNumber(),
+      prefisso: PhoneInput.paese.dial,
+      nazione: PhoneInput.paese.iso,
+      servizio: this.form.elements.servizio.value,
+      messaggio: this.form.elements.messaggio.value.trim(),
+    };
 
     try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
+      const res = await fetch(this.API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const dati = await res.json();
 
-      const result = await res.json()
-
-      if (res.ok && result.ok) {
-        showFeedback(
-          result.message ||
-            'Messaggio inviato con successo! Ti risponderemo al più presto.',
-          'success'
-        )
-        form.reset()
-        clearFieldErrors()
+      if (res.ok && dati.ok) {
+        esito.classList.add("ok");
+        esito.textContent = dati.message || "Richiesta inviata! Ti risponderemo al più presto.";
+        this.form.reset();
+        document.getElementById("f-telefono").value = "";
       } else {
-        const msg =
-          result.errori && result.errori.length
-            ? result.errori.join(' ')
-            : "Si è verificato un errore durante l'invio. Riprova più tardi."
-        showFeedback(msg, 'error')
+        esito.classList.add("errore");
+        esito.textContent = (dati.errori && dati.errori.join(" ")) ||
+          "Si è verificato un errore. Riprova o chiamaci direttamente.";
       }
     } catch (err) {
-      console.error('Errore invio form:', err)
-      showFeedback(
-        'Impossibile contattare il server. Controlla la connessione e riprova, oppure scrivici via WhatsApp.',
-        'error'
-      )
+      console.error("Errore invio form:", err);
+      esito.classList.add("errore");
+      esito.textContent =
+        "Impossibile contattare il server. Controlla la connessione o chiamaci al telefono.";
     } finally {
-      submitBtn.disabled = false
-      submitBtn.classList.remove('loading')
-      btnTextEl.textContent = originalText
+      btn.classList.remove("loading");
+      esito.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
-  })
-})()
+  },
+};
