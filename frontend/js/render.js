@@ -113,7 +113,7 @@ function renderProgetti(dati) {
                     .join("")}</div>`
                 : "<span></span>"
             }
-            ${apribile ? `<span class="project-link-btn">Apri ${SVG_EXTERNAL}</span>` : ""}
+            ${apribile ? `<span class="project-link-btn">Apri  ${SVG_EXTERNAL}</span>` : ""}
           </div>
         </div>
       </${tag}>`;
