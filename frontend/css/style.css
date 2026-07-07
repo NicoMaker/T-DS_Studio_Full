@@ -94,6 +94,7 @@ button {
   background: var(--bg);
   display: grid;
   place-items: center;
+  overflow: hidden;
   transition:
     opacity 0.6s var(--ease),
     visibility 0.6s;
@@ -102,7 +103,26 @@ button {
   opacity: 0;
   visibility: hidden;
 }
+.loader-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+/* Velo scuro sopra al video, aggiunto via JS solo quando il video parte
+   davvero (classe "has-video"): senza video il loader resta come prima */
+.page-loader.has-video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+}
 .loader-word {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 6vw, 4rem);
   font-weight: 800;

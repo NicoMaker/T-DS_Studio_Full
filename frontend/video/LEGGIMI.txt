@@ -1,0 +1,28 @@
+COME AGGIUNGERE I TUOI VIDEO
+=============================
+
+Questa cartella è dove il sito cerca automaticamente due video, se ci sono.
+Non serve toccare nessun file di codice: basta metterceli con questo
+nome esatto.
+
+1) video/intro.mp4
+   → Il video che parte all'avvio del sito, nella schermata di
+     caricamento (dove ora c'è scritto "Nooo.").
+   → Se questo file non c'è, resta la scritta animata come adesso.
+
+2) video/hero.mp4
+   → Il video di sfondo nella prima sezione della home page (quella con
+     il titolo "Il digitale che fa la differenza").
+   → Se questo file non c'è, resta lo sfondo grafico attuale.
+
+CONSIGLI SUL FILE VIDEO
+-----------------------
+- Formato: .mp4 (codifica H.264), è quello con più compatibilità.
+- Durata: pochi secondi, pensati per andare in loop.
+- Peso: più leggero possibile (idealmente sotto i 5-10 MB) perché parte
+  in automatico appena si apre il sito.
+- Il video parte sempre SENZA audio (è impostato così di proposito, per
+  poter partire in automatico su tutti i browser).
+
+Il nome del file deve essere esattamente "intro.mp4" e "hero.mp4",
+tutto minuscolo, dentro questa cartella "video".

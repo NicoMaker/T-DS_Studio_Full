@@ -14,6 +14,54 @@ function hidePageLoader() {
   setTimeout(() => loader.remove(), 700);
 }
 
+// ── Video di apertura (opzionale) ────────────────────────────
+// Se in /video/intro.mp4 non c'è nessun file, il video sparisce e resta
+// la sola scritta animata "Nooo." come prima. Basta metterci un file per
+// attivarlo, senza toccare il codice.
+function initIntroVideo() {
+  const video = document.getElementById("intro-video");
+  const loader = document.getElementById("page-loader");
+  if (!video || !loader) return;
+
+  const nascondi = () => {
+    video.style.display = "none";
+  };
+
+  // Con "autoplay" il video parte già durante il parsing dell'HTML:
+  // l'errore (file mancante) può essere scattato prima che questo
+  // script venisse eseguito, quindi controlliamo anche lo stato attuale.
+  if (video.error || video.networkState === 3 /* NETWORK_NO_SOURCE */) {
+    nascondi();
+  } else {
+    video.addEventListener("error", nascondi);
+  }
+  video.addEventListener("playing", () => loader.classList.add("has-video"));
+}
+
+// ── Video di sfondo nella hero (opzionale) ───────────────────
+// Stessa logica per /video/hero.mp4: se manca il file, resta lo sfondo
+// astratto già impostato via CSS su .hero-media.
+function initHeroVideo() {
+  const video = document.getElementById("hero-video");
+  if (!video) return;
+
+  const nascondi = () => {
+    video.style.display = "none";
+  };
+
+  if (video.error || video.networkState === 3 /* NETWORK_NO_SOURCE */) {
+    nascondi();
+  } else {
+    video.addEventListener("error", nascondi);
+  }
+}
+
+// Attivati il prima possibile: l'attributo "autoplay" fa già partire il
+// tentativo di caricamento durante il parsing dell'HTML, prima ancora
+// che gli script vengano eseguiti.
+initIntroVideo();
+initHeroVideo();
+
 // ── Reveal allo scroll ──────────────────────────────────────
 function initReveal() {
   const observer = new IntersectionObserver(

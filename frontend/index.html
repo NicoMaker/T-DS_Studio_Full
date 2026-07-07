@@ -25,7 +25,21 @@
   </head>
   <body>
     <!-- ========== BARRA DI CARICAMENTO ========== -->
+    <!-- Per usare un video di apertura personalizzato, basta mettere un
+         file "intro.mp4" nella cartella /video: parte da solo, senza
+         toccare il codice. Se il file non c'è, resta la sola scritta. -->
     <div class="page-loader" id="page-loader" aria-hidden="true">
+      <video
+        class="loader-video"
+        id="intro-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+      >
+        <source src="video/intro.mp4" type="video/mp4" />
+      </video>
       <span class="loader-word">Nooo<span class="loader-dot">.</span></span>
     </div>
 
@@ -76,8 +90,22 @@
     </div>
 
     <!-- ========== HERO ========== -->
+    <!-- Per usare un video di sfondo personalizzato, basta mettere un
+         file "hero.mp4" nella cartella /video: parte da solo, senza
+         toccare il codice. Se il file non c'è, resta lo sfondo astratto. -->
     <section id="home">
-      <div class="hero-media" id="hero-media" aria-hidden="true"></div>
+      <div class="hero-media" id="hero-media" aria-hidden="true">
+        <video
+          id="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+        >
+          <source src="video/hero.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div class="hero-veil" aria-hidden="true"></div>
       <div class="container hero-content">
         <span class="hero-eyebrow hero-in">Informatica &amp; Grafica</span>
