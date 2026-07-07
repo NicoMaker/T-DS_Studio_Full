@@ -1457,3 +1457,64 @@ button { font-family: inherit; }
   margin-top: 40px;
   padding-top: 40px;
 }
+
+/* --- Riduzione spazi nella pagina servizio --- */
+.servizio-detail-body {
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.servizio-detail-lista h3,
+.servizio-detail-faq h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+.servizio-detail-lista ul {
+  gap: 8px;
+}
+.servizio-detail-lista li {
+  font-size: 0.92rem;
+}
+.servizio-detail-faq .faq-toggle {
+  padding: 12px 0;
+  font-size: 0.92rem;
+}
+.faq-body {
+  padding-bottom: 8px;
+  font-size: 0.88rem;
+}
+.servizio-detail-cta {
+  padding: 32px 24px;
+  margin-bottom: 40px;
+}
+.servizio-detail-correlati,
+.servizio-detail-altri {
+  margin-bottom: 40px;
+}
+.servizio-detail-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+}
+.servizio-detail-icon {
+  width: 56px;
+  height: 56px;
+  font-size: 1.6rem;
+}
+.servizio-detail-title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  margin-bottom: 6px;
+}
+.servizio-detail-sub {
+  font-size: 0.95rem;
+}
+
+/* Nasconde il filtro categorie nei progetti correlati */
+#sd-correlati-categorie {
+  display: none;
+}
+
+/* Form nella pagina servizio */
+#contatti-form-servizio {
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
+  padding-top: 40px;
+}

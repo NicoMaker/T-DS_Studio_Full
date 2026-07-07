@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", servizio.descrizione);
 
+    // ── Popola dettagli servizio ──
     document.getElementById("sd-icon").textContent = servizio.icona;
     document.getElementById("sd-title").textContent = servizio.titolo;
     document.getElementById("sd-desc").textContent = servizio.descrizione;
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       .map((d) => `<li><span class="lista-check">✓</span>${d}</li>`)
       .join("");
 
-    // FAQ accordion
+    // ── FAQ accordion ──
     const faqWrap = document.getElementById("sd-faq");
     if (servizio.faq && servizio.faq.length) {
       faqWrap.innerHTML = servizio.faq
@@ -141,21 +142,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       correlatiWrap.style.display = "none";
     }
 
-    // ── Servizi correlati (griglia) ─────────────────────────
+    // ── Servizi correlati: TUTTI tranne il corrente ────────
     const altriGrid = document.getElementById("sd-altri-servizi-grid");
     if (altriGrid) {
-      let serviziDaMostrare;
-      if (servizio.correlati && servizio.correlati.length) {
-        serviziDaMostrare = servizio.correlati
-          .map((s) => serviziData.servizi.find((sv) => sv.slug === s))
-          .filter(Boolean);
-      } else {
-        serviziDaMostrare = serviziData.servizi.filter((s) => s.slug !== slug);
-      }
-
-      if (!serviziDaMostrare.length) {
-        serviziDaMostrare = serviziData.servizi.filter((s) => s.slug !== slug).slice(0, 3);
-      }
+      // Mostra tutti i servizi tranne quello attuale
+      const serviziDaMostrare = serviziData.servizi.filter((s) => s.slug !== slug);
 
       altriGrid.innerHTML = serviziDaMostrare
         .map((s, i) => `
