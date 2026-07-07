@@ -14,7 +14,7 @@ function hidePageLoader() {
   setTimeout(() => loader.remove(), 450);
 }
 
-// Il loader si chiude solo quando SIA la sequenza video+scritta è finita
+// Il loader si chiude solo quando SIA la sequenza video+logo è finita
 // SIA i dati del sito sono pronti (chiamato da main.js). Così, anche se i
 // dati arrivano subito, il video ha comunque il tempo di andare in scena.
 let introSequenceDone = false;
@@ -31,22 +31,41 @@ function markSiteDataReady() {
 window.markSiteDataReady = markSiteDataReady;
 
 // ── Video di apertura (opzionale) ────────────────────────────
-// Sequenza voluta: parte solo il video, a video finito compare la scritta
-// "T-DS." e il video resta fermo. Se in /video/intro.mp4 non c'è nessun
-// file, la scritta compare subito senza aspettare nulla.
+// Sequenza voluta: parte solo il video, a video finito compare il logo
+// e il video resta fermo. Se in /video/intro.mp4 non c'è nessun
+// file, il logo compare subito senza aspettare nulla.
+// Se si arriva da un'altra pagina dello stesso sito (es. servizio.html → home),
+// il loader viene saltato completamente per non ripetere l'intro.
 function initIntroVideo() {
-  const video = document.getElementById("intro-video");
   const loader = document.getElementById("page-loader");
+
+  // ── Salta il loader se si arriva da una pagina interna ──────
+  const ref = document.referrer;
+  const isInternalNavigation =
+    ref &&
+    (ref.includes(window.location.hostname) ||
+      ref.includes("servizio.html") ||
+      ref.includes("index.html"));
+
+  if (isInternalNavigation && loader) {
+    loader.classList.add("hidden");
+    setTimeout(() => loader.remove(), 0);
+    introSequenceDone = true;
+    tryHidePageLoader();
+    return;
+  }
+
+  const video = document.getElementById("intro-video");
   if (!video || !loader) {
     introSequenceDone = true;
     tryHidePageLoader();
     return;
   }
 
-  const mostraScritta = () => {
+  const mostraLogo = () => {
     if (loader.classList.contains("show-word")) return;
     loader.classList.add("show-word");
-    // Scritta breve e immediata: il sito parte quasi subito dopo.
+    // Logo breve e immediato: il sito parte quasi subito dopo.
     setTimeout(() => {
       introSequenceDone = true;
       tryHidePageLoader();
@@ -55,7 +74,7 @@ function initIntroVideo() {
 
   const nascondiVideo = () => {
     video.style.display = "none";
-    mostraScritta();
+    mostraLogo();
   };
 
   // Con "autoplay" il video parte già durante il parsing dell'HTML:
@@ -68,11 +87,11 @@ function initIntroVideo() {
   video.addEventListener("error", nascondiVideo);
   video.addEventListener("playing", () => loader.classList.add("has-video"));
   // Il video non è più in loop: quando finisce di girare (una volta sola)
-  // resta fermo sull'ultimo fotogramma e a quel punto compare la scritta.
-  video.addEventListener("ended", mostraScritta);
+  // resta fermo sull'ultimo fotogramma e a quel punto compare il logo.
+  video.addEventListener("ended", mostraLogo);
   // Rete di sicurezza: se per qualche motivo il video non parte o non
-  // finisce mai, mostra comunque la scritta dopo un tempo massimo.
-  setTimeout(mostraScritta, 6000);
+  // finisce mai, mostra comunque il logo dopo un tempo massimo.
+  setTimeout(mostraLogo, 6000);
 }
 
 // ── Video di sfondo nella hero (opzionale) ───────────────────
