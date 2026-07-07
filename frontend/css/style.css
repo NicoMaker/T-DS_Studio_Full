@@ -20,9 +20,9 @@
   --error: #ff6b5e;
   --ok: #4ade80;
 
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-mono: "Manrope", system-ui, sans-serif;
 
   --radius: 14px;
   --radius-lg: 22px;
@@ -611,6 +611,7 @@ button { font-family: inherit; }
 }
 .progetto-card {
   --card-accent: var(--accent);
+  display: block;
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -653,7 +654,8 @@ button { font-family: inherit; }
   margin-bottom: 8px;
 }
 .progetto-body p { color: var(--muted); font-size: 0.93rem; }
-.progetto-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.progetto-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.progetto-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
 .tag {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -945,55 +947,7 @@ button { font-family: inherit; }
   color: var(--error);
 }
 
-/* ── Footer: SOLO orari ─────────────────────────────────── */
-.site-footer {
-  background: #070a12;
-  border-top: 1px solid var(--line);
-  padding: 64px 0 0;
-}
-#Contatti { width: min(var(--container), 92%); margin-inline: auto; }
-.footer-content { padding-bottom: 30px; }
-.footer-grid-orari {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  gap: 70px;
-}
-.footer-subtitle {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--accent-bright);
-  margin-bottom: 14px;
-}
-.legenda-orari h1.footer-subtitle { font-size: 0.72rem; }
-.footer-list { display: grid; gap: 9px; }
-.footer-item {
-  font-size: 0.92rem;
-  color: var(--ink-dim);
-  font-variant-numeric: tabular-nums;
-}
-.legenda-orari > div { font-size: 0.86rem; color: var(--ink-dim); margin-bottom: 6px; }
-.footer-closure-alert {
-  margin-top: 16px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(255, 107, 94, 0.1);
-  border: 1px solid rgba(255, 107, 94, 0.4);
-  font-size: 0.85rem;
-  color: #ff9d94;
-}
-.footer-closure-alert .material-icons { font-size: 16px; vertical-align: -3px; }
-.footer-bottom {
-  border-top: 1px solid var(--line);
-  margin-top: 26px;
-  padding: 22px 0;
-  text-align: center;
-  font-size: 0.82rem;
-  color: var(--muted);
-}
+/* ── Footer ─────────────────────────────────────────────── */
 
 /* ── Pagina dettaglio servizio (servizio.html) ─────────────── */
 .servizio-detail-inner { padding-top: 130px; padding-bottom: 40px; }
@@ -1209,8 +1163,8 @@ button { font-family: inherit; }
 }
 .servizio-select-wrap select option { background: var(--panel); color: var(--ink); }
 
-/* Footer semplice della pagina servizio */
-#footer { background: #070a12; border-top: 1px solid var(--line); padding: 48px 0; margin-top: 40px; }
+/* Footer semplice (uguale su tutte le pagine) */
+.site-footer { background: #070a12; border-top: 1px solid var(--line); padding: 48px 0; margin-top: 40px; }
 .footer-inner {
   display: flex;
   align-items: center;
@@ -1244,7 +1198,6 @@ button { font-family: inherit; }
 @media (max-width: 640px) {
   .section { padding: 76px 0; }
   .form-row { grid-template-columns: 1fr; }
-  .footer-grid-orari { grid-template-columns: 1fr; gap: 36px; justify-content: start; }
   .form-footer { flex-direction: column; align-items: stretch; }
   .btn-submit { justify-content: center; }
 }

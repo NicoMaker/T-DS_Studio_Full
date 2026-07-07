@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderProgetti(progetti);
     renderVideo(video);
     renderTeam(site);
+    renderFooterSocial(site);
 
     initFilterGrid({
       grid: document.getElementById("progetti-grid"),
@@ -34,5 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initMagneticButtons();
     initHeroGlow();
     hidePageLoader();
+    const yearEl = document.getElementById("current-year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 });

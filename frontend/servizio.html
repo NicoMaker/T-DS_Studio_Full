@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
@@ -158,10 +158,20 @@
       </div>
     </section>
 
-    <!-- ========== FOOTER (orari live, come index.html) ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer class="site-footer">
-      <div id="Contatti">
-        <p style="text-align: center; opacity: 0.6">Caricamento…</p>
+      <div class="container">
+        <div class="footer-inner">
+          <a href="index.html#home" class="nav-logo footer-logo-link" aria-label="Nooo Agency - Home">
+            <span class="nav-logo-mark" aria-hidden="true">N.</span>
+            <span class="nav-logo-text">Nooo<span class="nav-logo-dot">.</span></span>
+          </a>
+          <p class="footer-copy">
+            © <span id="current-year"></span> Nooo Agency – Informatica &amp;
+            Grafica.
+          </p>
+          <div class="footer-social" id="footer-social"></div>
+        </div>
       </div>
     </footer>
 
@@ -172,13 +182,5 @@
     <script src="js/render.js"></script>
     <script src="js/progetti-filter.js"></script>
     <script src="js/servizio-page.js"></script>
-
-    <!-- ── Script footer orari (ordine importante) ── -->
-    <script src="js/footer/date-utils.js"></script>
-    <script src="js/footer/gestisci_chiusure.js"></script>
-    <script src="js/footer/gestisci_apertura.js"></script>
-    <script src="js/footer/creazione_html.js"></script>
-    <script src="js/footer/aggiorna-orari.js"></script>
-    <script src="js/footer/footer-main.js"></script>
   </body>
 </html>

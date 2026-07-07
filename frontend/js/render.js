@@ -69,13 +69,18 @@ function renderProgetti(dati) {
   if (sotto && dati.sottotitolo) sotto.textContent = dati.sottotitolo;
 
   grid.innerHTML = (dati.progetti || [])
-    .map(
-      (p, i) => `
-      <article
+    .map((p, i) => {
+      const apribile = isUrlValida(p.link);
+      const tag = apribile ? "a" : "article";
+      const attrLink = apribile
+        ? ` href="${p.link}" target="_blank" rel="noopener" aria-label="Apri il progetto ${p.titolo}"`
+        : "";
+      return `
+      <${tag}
         class="progetto-card reveal reveal-delay-${i % 3}"
         style="--card-accent:${p.colore || "var(--accent)"}"
         data-cat="${p.categoria || ""}"
-        data-search="${(`${p.titolo} ${p.descrizione || ""} ${(p.tecnologie || []).join(" ")}`).replace(/"/g, "&quot;").toLowerCase()}"
+        data-search="${(`${p.titolo} ${p.descrizione || ""} ${(p.tecnologie || []).join(" ")}`).replace(/"/g, "&quot;").toLowerCase()}"${attrLink}
       >
         <div class="progetto-media">
           <img
@@ -92,17 +97,27 @@ function renderProgetti(dati) {
           </div>
           <h3>${p.titolo}</h3>
           <p>${p.descrizione || ""}</p>
-          ${
-            p.tecnologie && p.tecnologie.length
-              ? `<div class="progetto-tags">${p.tecnologie
-                  .map((t) => `<span class="tag">${t}</span>`)
-                  .join("")}</div>`
-              : ""
-          }
+          <div class="progetto-footer">
+            ${
+              p.tecnologie && p.tecnologie.length
+                ? `<div class="progetto-tags">${p.tecnologie
+                    .map((t) => `<span class="tag">${t}</span>`)
+                    .join("")}</div>`
+                : "<span></span>"
+            }
+            ${apribile ? `<span class="project-link-btn">Apri ${SVG_EXTERNAL}</span>` : ""}
+          </div>
         </div>
-      </article>`,
-    )
+      </${tag}>`;
+    })
     .join("");
+}
+
+// Considera valido solo un link che sembra davvero un URL (evita
+// di mostrare un bottone "Apri" rotto per valori segnaposto tipo "ejoi2j")
+function isUrlValida(link) {
+  if (!link || typeof link !== "string") return false;
+  return /^(https?:\/\/|\/)/i.test(link.trim());
 }
 
 // ── Video ───────────────────────────────────────────────────
