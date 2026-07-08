@@ -111,6 +111,7 @@ function renderProgetti(dati) {
                     .join("")}</div>`
                 : "<span></span>"
             }
+            <br>
             ${apribile ? `<span class="project-link-btn">Apri ${p.categoria || "progetto"} ${SVG_EXTERNAL}</span>` : ""}
           </div>
         </div>
