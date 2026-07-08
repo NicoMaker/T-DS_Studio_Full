@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p class="project-desc">${p.descrizione}</p>
             <div class="project-card-footer">
               <div class="project-tech">${(p.tecnologie || []).map((t) => `<span class="tech-tag">${t}</span>`).join("")}</div>
+              <br>
               ${apribile ? `<span class="project-link-btn">Apri ${SVG_EXTERNAL}</span>` : ""}
             </div>
           </div>
