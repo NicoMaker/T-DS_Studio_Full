@@ -153,7 +153,7 @@ function initNav() {
     // sia nella navbar desktop sia nel menu mobile
     document
       .querySelectorAll(
-        '.nav-links a[href*="servizi"], .nav-mobile a[href*="servizi"]',
+        '.nav-links a[href$="#servizi"], .nav-mobile a[href$="#servizi"]',
       )
       .forEach((l) => l.classList.add("active"));
   }

@@ -348,7 +348,8 @@ button {
   color: var(--accent);
   vertical-align: middle;
 }
-.nav-mobile .mobile-cta {
+.nav-mobile .mobile-cta,
+.nav-mobile a.mobile-cta.active {
   margin-top: 18px;
   color: #ffffff;
   background: var(--accent);
@@ -1071,11 +1072,21 @@ button {
    FILTRI PROGETTI
    ============================================================ */
 .filter-bar {
+  position: sticky;
+  top: 84px;
+  z-index: 90;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   margin-bottom: 36px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(23, 26, 33, 0.06);
 }
 .search-wrapper {
   position: relative;
@@ -2207,6 +2218,9 @@ button {
   }
   .search-wrapper {
     max-width: none;
+  }
+  .filter-bar {
+    top: 66px;
   }
 }
 
