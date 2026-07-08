@@ -97,6 +97,7 @@ function initNav() {
     };
 
     let ticking = false;
+    let hashCorrente = null;
     const aggiornaSezioneAttiva = () => {
       ticking = false;
       const refY = getReferenceY();
@@ -118,6 +119,19 @@ function initNav() {
         corrente = sections[sections.length - 1].id;
 
       setActiveLink(corrente);
+
+      // ── Aggiorna l'URL in automatico mentre si scorre ─────────
+      // Usiamo history.replaceState (non location.hash) così il
+      // browser NON riscrolla la pagina e non si riempie la
+      // cronologia di un passaggio per ogni sezione attraversata.
+      if (corrente && corrente !== hashCorrente) {
+        hashCorrente = corrente;
+        try {
+          history.replaceState(null, "", "#" + corrente);
+        } catch (e) {
+          /* alcuni browser/contesti possono bloccarlo: ignora */
+        }
+      }
     };
 
     window.addEventListener(
