@@ -122,9 +122,14 @@ function formatTelefono(telefono, tipoTelefono) {
 
   // ── Numero FISSO italiano: separa il prefisso distrettuale ──
   // (i fissi italiani iniziano sempre con 0: 02, 041, 0432, ...)
-  if ((tipoTelefono === "fisso" || locali.startsWith("0")) && locali.length >= 5) {
+  if (
+    (tipoTelefono === "fisso" || locali.startsWith("0")) &&
+    locali.length >= 5
+  ) {
     const [distrettuale, resto] = splitPrefissoFisso(locali);
-    corpo = resto ? `${distrettuale} ${formattaUtenteFisso(resto)}` : distrettuale;
+    corpo = resto
+      ? `${distrettuale} ${formattaUtenteFisso(resto)}`
+      : distrettuale;
   } else if (locali.length === 10) {
     // mobile IT: 3 + 3 + 4 (es. 333 123 4567)
     corpo = `${locali.slice(0, 3)} ${locali.slice(3, 6)} ${locali.slice(6)}`;

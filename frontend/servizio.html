@@ -74,109 +74,172 @@
     </div>
 
     <!-- ========== SERVIZIO DETAIL ========== -->
-<section id="servizio-detail" class="section">
-  <div class="container">
-    <div class="servizio-detail-inner">
-      <a href="index.html#servizi" class="btn-back">Tutti i servizi</a>
+    <section id="servizio-detail" class="section">
+      <div class="container">
+        <div class="servizio-detail-inner">
+          <a href="index.html#servizi" class="btn-back">Tutti i servizi</a>
 
-      <!-- Stato di caricamento -->
-      <div id="sd-loading" style="padding: 60px 0; text-align: center; color: var(--muted)">
-        Caricamento…
-      </div>
-
-      <!-- Stato "servizio non trovato" -->
-      <div id="sd-notfound" style="display: none; padding: 60px 0; text-align: center">
-        <h2 style="margin-bottom: 16px">Servizio non trovato</h2>
-        <p style="margin-bottom: 32px; color: var(--muted)">
-          Il servizio che cerchi non esiste o è stato rimosso.
-        </p>
-        <a href="index.html#servizi" class="btn btn-primary">Torna ai servizi</a>
-      </div>
-
-      <!-- Contenuto servizio (popolato via JS) -->
-      <div id="sd-content" style="display: none">
-        <!-- HERO: immagine a sinistra, testo a destra -->
-        <div class="servizio-hero reveal">
-          <div class="servizio-hero-image" id="sd-hero-image">
-            <img
-              src=""
-              alt=""
-              id="sd-hero-img"
-              loading="lazy"
-              onerror="this.style.display='none';document.getElementById('sd-hero-fallback').style.display='grid'"
-            />
-            <div class="servizio-hero-fallback" id="sd-hero-fallback">
-              <span class="material-icons">business</span>
-            </div>
+          <!-- Stato di caricamento -->
+          <div
+            id="sd-loading"
+            style="padding: 60px 0; text-align: center; color: var(--muted)"
+          >
+            Caricamento…
           </div>
-          <div class="servizio-hero-content">
-            <h1 class="servizio-hero-title" id="sd-title"></h1>
-            <p class="servizio-hero-desc" id="sd-desc"></p>
+
+          <!-- Stato "servizio non trovato" -->
+          <div
+            id="sd-notfound"
+            style="display: none; padding: 60px 0; text-align: center"
+          >
+            <h2 style="margin-bottom: 16px">Servizio non trovato</h2>
+            <p style="margin-bottom: 32px; color: var(--muted)">
+              Il servizio che cerchi non esiste o è stato rimosso.
+            </p>
+            <a href="index.html#servizi" class="btn btn-primary"
+              >Torna ai servizi</a
+            >
           </div>
-        </div>
 
-        <!-- Corpo: lista + FAQ affiancate -->
-        <div class="servizio-detail-body">
-          <div class="servizio-detail-lista reveal">
-            <h3>Cosa include</h3>
-            <ul id="sd-lista"></ul>
-          </div>
-          <div class="servizio-detail-faq reveal">
-            <h3>Domande frequenti</h3>
-            <div id="sd-faq"></div>
-          </div>
-        </div>
-
-        <!-- CTA -->
-        <div class="servizio-detail-cta reveal">
-          <p>Hai bisogno di questo servizio?</p>
-          <a href="#contatti-form-servizio" class="btn btn-primary">Contattaci ora</a>
-        </div>
-
-        <!-- Progetti correlati -->
-        <div class="servizio-detail-correlati reveal" id="sd-correlati-wrap">
-          <h3>Progetti correlati</h3>
-          <div class="filter-bar" id="sd-correlati-filter-bar">
-            <div class="search-wrapper">
-              <span class="search-icon" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
-                  <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <input type="text" id="sd-search-correlati" placeholder="Cerca progetti…" aria-label="Cerca nei progetti correlati" />
-            </div>
-            <div class="category-filter" id="sd-correlati-categorie" role="group" aria-label="Filtra per categoria"></div>
-          </div>
-          <div class="progetti-grid" id="sd-correlati-grid"></div>
-          <p class="filter-empty" id="sd-correlati-empty" style="display: none">Nessun progetto trovato per questa ricerca.</p>
-        </div>
-
-        <!-- Servizi correlati (TUTTI tranne il corrente) -->
-        <div class="servizio-detail-altri reveal">
-          <h3>Servizi correlati</h3>
-          <p class="servizio-correlati-hint">Scopri tutti gli altri servizi che offriamo.</p>
-          <div class="servizi-grid" id="sd-altri-servizi-grid"></div>
-        </div>
-
-        <!-- ========== SEZIONE CONTATTI ========== -->
-        <section id="contatti-form-servizio" class="section section-form" style="padding-top: 40px; padding-bottom: 40px; margin-top: 20px">
-          <div class="container">
-            <div class="section-header reveal">
-              <h2>Parlaci del tuo progetto</h2>
-              <p class="section-sub">Rispondiamo entro un giorno lavorativo. Il preventivo è sempre gratuito e senza impegno.</p>
+          <!-- Contenuto servizio (popolato via JS) -->
+          <div id="sd-content" style="display: none">
+            <!-- HERO: immagine a sinistra, testo a destra -->
+            <div class="servizio-hero reveal">
+              <div class="servizio-hero-image" id="sd-hero-image">
+                <img
+                  src=""
+                  alt=""
+                  id="sd-hero-img"
+                  loading="lazy"
+                  onerror="
+                    this.style.display = 'none';
+                    document.getElementById('sd-hero-fallback').style.display =
+                      'grid';
+                  "
+                />
+                <div class="servizio-hero-fallback" id="sd-hero-fallback">
+                  <span class="material-icons">business</span>
+                </div>
+              </div>
+              <div class="servizio-hero-content">
+                <h1 class="servizio-hero-title" id="sd-title"></h1>
+                <p class="servizio-hero-desc" id="sd-desc"></p>
+              </div>
             </div>
 
-            <form id="form-contatti" class="form-contatti reveal" novalidate>
-              <!-- ... form fields ... -->
-            </form>
+            <!-- Corpo: lista + FAQ affiancate -->
+            <div class="servizio-detail-body">
+              <div class="servizio-detail-lista reveal">
+                <h3>Cosa include</h3>
+                <ul id="sd-lista"></ul>
+              </div>
+              <div class="servizio-detail-faq reveal">
+                <h3>Domande frequenti</h3>
+                <div id="sd-faq"></div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="servizio-detail-cta reveal">
+              <p>Hai bisogno di questo servizio?</p>
+              <a href="#contatti-form-servizio" class="btn btn-primary"
+                >Contattaci ora</a
+              >
+            </div>
+
+            <!-- Progetti correlati -->
+            <div
+              class="servizio-detail-correlati reveal"
+              id="sd-correlati-wrap"
+            >
+              <h3>Progetti correlati</h3>
+              <div class="filter-bar" id="sd-correlati-filter-bar">
+                <div class="search-wrapper">
+                  <span class="search-icon" aria-hidden="true">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="11"
+                        cy="11"
+                        r="7"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M21 21l-4.3-4.3"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="sd-search-correlati"
+                    placeholder="Cerca progetti…"
+                    aria-label="Cerca nei progetti correlati"
+                  />
+                </div>
+                <div
+                  class="category-filter"
+                  id="sd-correlati-categorie"
+                  role="group"
+                  aria-label="Filtra per categoria"
+                ></div>
+              </div>
+              <div class="progetti-grid" id="sd-correlati-grid"></div>
+              <p
+                class="filter-empty"
+                id="sd-correlati-empty"
+                style="display: none"
+              >
+                Nessun progetto trovato per questa ricerca.
+              </p>
+            </div>
+
+            <!-- Servizi correlati (TUTTI tranne il corrente) -->
+            <div class="servizio-detail-altri reveal">
+              <h3>Servizi correlati</h3>
+              <p class="servizio-correlati-hint">
+                Scopri tutti gli altri servizi che offriamo.
+              </p>
+              <div class="servizi-grid" id="sd-altri-servizi-grid"></div>
+            </div>
+
+            <!-- ========== SEZIONE CONTATTI ========== -->
+            <section
+              id="contatti-form-servizio"
+              class="section section-form"
+              style="padding-top: 40px; padding-bottom: 40px; margin-top: 20px"
+            >
+              <div class="container">
+                <div class="section-header reveal">
+                  <h2>Parlaci del tuo progetto</h2>
+                  <p class="section-sub">
+                    Rispondiamo entro un giorno lavorativo. Il preventivo è
+                    sempre gratuito e senza impegno.
+                  </p>
+                </div>
+
+                <form
+                  id="form-contatti"
+                  class="form-contatti reveal"
+                  novalidate
+                >
+                  <!-- ... form fields ... -->
+                </form>
+              </div>
+            </section>
+            <!-- ========== FINE SEZIONE CONTATTI ========== -->
           </div>
-        </section>
-        <!-- ========== FINE SEZIONE CONTATTI ========== -->
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- ========== FOOTER ========== -->
     <footer class="site-footer">
@@ -190,7 +253,8 @@
             <img src="img/Logo.png" alt="T‑DS Agency" class="nav-logo-img" />
           </a>
           <p class="footer-copy">
-            © <span id="current-year"></span> T‑DS Studio – Agenzia di Comunicazione.
+            © <span id="current-year"></span> T‑DS Studio – Agenzia di
+            Comunicazione.
           </p>
           <div class="footer-social" id="footer-social"></div>
         </div>

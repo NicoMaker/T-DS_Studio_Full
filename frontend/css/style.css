@@ -1861,11 +1861,7 @@ button {
       rgba(10, 10, 10, 0.6) 46%,
       rgba(10, 10, 10, 0.12) 78%
     ),
-    linear-gradient(
-      100deg,
-      rgba(10, 10, 10, 0.55) 0%,
-      rgba(10, 10, 10, 0) 62%
-    );
+    linear-gradient(100deg, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0) 62%);
 }
 .servizio-detail-header-content {
   position: relative;
@@ -2354,8 +2350,7 @@ button {
    "PAGINA SERVIZIO" — qui prima c'erano dei duplicati in conflitto tra
    loro che causavano il rendering incoerente delle foto su mobile/desktop). */
 
-
-   /* ============================================================
+/* ============================================================
    SERVIZIO DETAIL — HERO CON IMMAGINE GRANDE E TESTO SOTTO
    ============================================================ */
 
@@ -2744,21 +2739,22 @@ button {
 .servizio-hero-image {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 7;               /* <-- da 16/9 a 16/7 (più bassa) */
-  max-height: 460px;                  /* <-- limite per schermi molto larghi */
+  aspect-ratio: 16 / 7; /* <-- da 16/9 a 16/7 (più bassa) */
+  max-height: 460px; /* <-- limite per schermi molto larghi */
   background: var(--bg-2);
   overflow: hidden;
 }
 
 /* Il resto rimane invariato... */
 
-
 /* ── Hero del servizio: immagine intera, senza tagli ── */
 .servizio-hero-image {
   position: relative;
   width: 100%;
-  max-height: 460px;               /* Altezza massima (leggermente più piccola) */
-  background: var(--bg-2);          /* Sfondo di riempimento se l'immagine è più stretta */
+  max-height: 460px; /* Altezza massima (leggermente più piccola) */
+  background: var(
+    --bg-2
+  ); /* Sfondo di riempimento se l'immagine è più stretta */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2768,14 +2764,14 @@ button {
 .servizio-hero-image img {
   width: 100%;
   height: 100%;
-  max-height: 460px;               /* Stesso limite del contenitore */
-  object-fit: contain;             /* MOSTRA TUTTA L'IMMAGINE senza tagli */
+  max-height: 460px; /* Stesso limite del contenitore */
+  object-fit: contain; /* MOSTRA TUTTA L'IMMAGINE senza tagli */
   display: block;
   transition: transform 0.7s var(--ease-spring);
 }
 
 .servizio-hero:hover .servizio-hero-image img {
-  transform: scale(1.02);          /* Piccolo zoom al passaggio del mouse */
+  transform: scale(1.02); /* Piccolo zoom al passaggio del mouse */
 }
 
 /* ── Fallback (icona) centrato ── */
@@ -2834,7 +2830,7 @@ button {
 .servizio-hero-fallback {
   position: absolute;
   inset: 0;
-  display: none;  /* gestito via JS */
+  display: none; /* gestito via JS */
   place-items: center;
   background: linear-gradient(
     135deg,
@@ -2966,8 +2962,8 @@ button {
 
 /* ── Immagine a sinistra ── */
 .servizio-hero-image {
-  flex: 0 0 42%;                     /* Larghezza fissa 42% */
-  aspect-ratio: 4 / 3;               /* Rapporto fisso per non deformare */
+  flex: 0 0 42%; /* Larghezza fissa 42% */
+  aspect-ratio: 4 / 3; /* Rapporto fisso per non deformare */
   max-height: 360px;
   background: var(--bg-2);
   overflow: hidden;
@@ -2977,10 +2973,10 @@ button {
 .servizio-hero-image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;               /* MOSTRA TUTTA L'IMMAGINE senza tagli */
+  object-fit: contain; /* MOSTRA TUTTA L'IMMAGINE senza tagli */
   object-position: center;
   display: block;
-  background: var(--bg-2);           /* Sfondo se l'immagine è più piccola */
+  background: var(--bg-2); /* Sfondo se l'immagine è più piccola */
   transition: transform 0.7s var(--ease-spring);
 }
 
@@ -3029,7 +3025,7 @@ button {
   }
 
   .servizio-hero-image img {
-    object-fit: cover;              /* Su mobile può tagliare leggermente, ma è accettabile */
+    object-fit: cover; /* Su mobile può tagliare leggermente, ma è accettabile */
   }
 
   .servizio-hero-content {
@@ -3060,7 +3056,7 @@ button {
   margin: 24px 0 44px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--panel);        /* sfondo bianco, non più grigio */
+  background: var(--panel); /* sfondo bianco, non più grigio */
   min-height: 280px;
 }
 
@@ -3068,7 +3064,7 @@ button {
 .servizio-hero-image {
   flex: 0 0 42%;
   max-height: 340px;
-  background: var(--panel);        /* bianco, non grigio */
+  background: var(--panel); /* bianco, non grigio */
   overflow: hidden;
   position: relative;
 }
@@ -3077,10 +3073,10 @@ button {
   width: 100%;
   height: 100%;
   max-height: 340px;
-  object-fit: contain;             /* mostra tutta l'immagine, senza tagli */
+  object-fit: contain; /* mostra tutta l'immagine, senza tagli */
   object-position: center;
   display: block;
-  background: var(--panel);        /* bianco, non grigio */
+  background: var(--panel); /* bianco, non grigio */
   transition: transform 0.7s var(--ease-spring);
 }
 
@@ -3176,7 +3172,7 @@ button {
 
   .servizio-hero-image img {
     max-height: 280px;
-    object-fit: cover;           /* su mobile riempie meglio */
+    object-fit: cover; /* su mobile riempie meglio */
   }
 
   .servizio-hero-content {
@@ -3248,7 +3244,7 @@ button {
   width: 100%;
   height: 100%;
   max-height: 340px;
-  object-fit: contain;          /* MOSTRA TUTTA L'IMMAGINE — mai tagliata */
+  object-fit: contain; /* MOSTRA TUTTA L'IMMAGINE — mai tagliata */
   object-position: center;
   display: block;
   background: var(--panel);
@@ -3342,12 +3338,12 @@ button {
     flex: 0 0 auto;
     width: 100%;
     max-height: 280px;
-    aspect-ratio: auto;         /* nessun rapporto forzato, si adatta all'immagine */
+    aspect-ratio: auto; /* nessun rapporto forzato, si adatta all'immagine */
   }
 
   .servizio-hero-image img {
     max-height: 280px;
-    object-fit: contain;        /* ANCHE SU MOBILE: immagine intera, mai tagliata */
+    object-fit: contain; /* ANCHE SU MOBILE: immagine intera, mai tagliata */
   }
 
   .servizio-hero-content {

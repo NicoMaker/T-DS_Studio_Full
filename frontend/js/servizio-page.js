@@ -77,7 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const faqWrap = document.getElementById("sd-faq");
     if (servizio.faq && servizio.faq.length) {
       faqWrap.innerHTML = servizio.faq
-        .map((f, i) => `
+        .map(
+          (f, i) => `
           <div class="faq-item">
             <button class="faq-toggle" aria-expanded="false" aria-controls="faq-body-${i}">
               <span class="faq-label">${f.domanda}</span>
@@ -87,7 +88,8 @@ document.addEventListener("DOMContentLoaded", async () => {
               <p>${f.risposta}</p>
             </div>
           </div>
-        `)
+        `,
+        )
         .join("");
 
       faqWrap.querySelectorAll(".faq-toggle").forEach((btn) => {
@@ -97,7 +99,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           faqWrap.querySelectorAll(".faq-item").forEach((el) => {
             el.classList.remove("open");
-            el.querySelector(".faq-toggle").setAttribute("aria-expanded", "false");
+            el.querySelector(".faq-toggle").setAttribute(
+              "aria-expanded",
+              "false",
+            );
           });
 
           if (!eraAperta) {

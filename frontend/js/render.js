@@ -30,15 +30,17 @@ async function caricaPrefissi() {
     if (Array.isArray(lista) && lista.length) {
       // Estrae i dial (senza il '+') e li ordina per lunghezza decrescente
       const dials = lista
-        .map(p => p.dial.replace('+', ''))
-        .filter(d => /^\d+$/.test(d));
+        .map((p) => p.dial.replace("+", ""))
+        .filter((d) => /^\d+$/.test(d));
       // Ordina per lunghezza decrescente (così i prefissi più lunghi vengono provati prima)
       PREFISSI_INTERNAZIONALI = dials.sort((a, b) => b.length - a.length);
     }
   } catch (err) {
-    console.warn("Impossibile caricare i prefissi telefonici, uso fallback limitato.");
+    console.warn(
+      "Impossibile caricare i prefissi telefonici, uso fallback limitato.",
+    );
     // Fallback minimo (solo Italia)
-    PREFISSI_INTERNAZIONALI = ['39'];
+    PREFISSI_INTERNAZIONALI = ["39"];
   }
 }
 
@@ -278,15 +280,15 @@ function renderVideo(dati) {
 // ── Utilità per numeri e icone ──────────────────────────────
 // Formatta un numero di telefono usando i prefissi caricati da JSON
 function formatNumeroVisuale(numero) {
-  if (!numero) return '';
-  let num = String(numero).replace(/\s+/g, '');
-  let prefisso = '';
+  if (!numero) return "";
+  let num = String(numero).replace(/\s+/g, "");
+  let prefisso = "";
   let resto = num;
 
   // Se inizia con '00' o '+' estraiamo il prefisso internazionale
-  if (num.startsWith('+')) {
+  if (num.startsWith("+")) {
     num = num.substring(1);
-  } else if (num.startsWith('00')) {
+  } else if (num.startsWith("00")) {
     num = num.substring(2);
   }
 
@@ -294,7 +296,7 @@ function formatNumeroVisuale(numero) {
   let trovato = false;
   for (const p of PREFISSI_INTERNAZIONALI) {
     if (num.startsWith(p)) {
-      prefisso = '+' + p;
+      prefisso = "+" + p;
       resto = num.substring(p.length);
       trovato = true;
       break;
@@ -314,7 +316,7 @@ function formatNumeroVisuale(numero) {
     const ultimo = gruppi.pop();
     gruppi[gruppi.length - 1] += ultimo;
   }
-  return prefisso + ' ' + gruppi.join(' ');
+  return prefisso + " " + gruppi.join(" ");
 }
 
 function flagImgHtml(iso, opts = {}) {
@@ -432,7 +434,8 @@ function renderFooterSocial(site) {
   const social = (site && site.social) || {};
 
   wrap.innerHTML = SOCIAL_PLATFORMS.filter((p) => social[p.key])
-    .map((p) => `
+    .map(
+      (p) => `
       <a
         href="${social[p.key]}"
         target="_blank"
@@ -444,6 +447,7 @@ function renderFooterSocial(site) {
         ${p.icon}
         <span class="footer-social-label">${p.label}</span>
       </a>
-    `)
+    `,
+    )
     .join("");
 }
