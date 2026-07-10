@@ -1,7 +1,7 @@
 {
-  "name": "T-DS Agency Server",
+  "name": "T-DS Studio Server",
   "version": "2.0.0",
-  "description": "Backend Node.js del sito Nooo Agency: form contatti via email (Express + Nodemailer)",
+  "description": "Backend Node.js del sito T-DS Studio: form contatti via email (Express + Nodemailer)",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

@@ -44,28 +44,6 @@
       "link": "https://idealegnofvg.com/"
     },
     {
-      "id": 3,
-      "titolo": "Giri in Bici",
-      "categoria": "Sito Web",
-      "descrizione": "Web app per raccontare e organizzare itinerari in bicicletta: percorsi, tappe e dettagli di ogni giro.",
-      "dettagli": [
-        "Schede percorso con tutti i dettagli",
-        "Interfaccia leggera e veloce",
-        "Codice open source su GitHub"
-      ],
-      "tecnologie": [
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "Netlify"
-      ],
-      "immagine": "img/Web_Site/Giri_in_Bici.jpg",
-      "immagine_placeholder": "https://picsum.photos/seed/giribici/600/400",
-      "anno": 2025,
-      "colore": "#c2470e",
-      "link": "https://giri-in-bici.netlify.app/"
-    },
-    {
       "id": 4,
       "titolo": "Bottadiculo",
       "categoria": "Brand Identity",
