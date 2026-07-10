@@ -75,9 +75,8 @@
       "slug": "app-software",
       "titolo": "App & Software",
       "icona": "📱",
-      "descrizione": "Sviluppiamo applicazioni mobile e web custom per automatizzare processi e migliorare l'esperienza utente.",
+      "descrizione": "Sviluppiamo applicazioni web custom per automatizzare processi e migliorare l'esperienza utente.",
       "dettagli": [
-        "App iOS e Android",
         "Web app e portali gestionali",
         "Integrazione API e sistemi terzi",
         "Dashboard e pannelli admin"
