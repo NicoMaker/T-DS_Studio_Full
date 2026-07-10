@@ -82,11 +82,10 @@
         "Applicazioni del brand su materiali reali"
       ],
       "tecnologie": ["Illustrator", "Photoshop", "Behance"],
-      "immagine": "Web_Site/Bottadiculo.jpg",
+      "immagine": "Img/Brand_Identity/Bottadiculo.png",
       "immagine_placeholder": "https://picsum.photos/seed/bottadiculo/600/400",
       "anno": 2025,
-      "colore": "#e85d1f",
-      "link": "https://www.behance.net/gallery/236998711/Bottadiculo-Brand-Identity"
+      "colore": "#e85d1f"
     },
     {
       "id": 6,
@@ -99,11 +98,10 @@
         "Impaginazione completa del magazine"
       ],
       "tecnologie": ["InDesign", "Illustrator", "Behance"],
-      "immagine": "Web_Site/SPAZIO_Illuminamente.jpg",
+      "immagine": "Img/Brand_Identity/SPAZIO_Magazine.png",
       "immagine_placeholder": "https://picsum.photos/seed/spazio/600/400",
       "anno": 2025,
-      "colore": "#c2470e",
-      "link": "https://www.behance.net/gallery/249467217/SPAZIO-Illuminamente_magazine-design"
+      "colore": "#c2470e"
     },
     {
       "id": 7,
@@ -116,11 +114,10 @@
         "File pronti per la stampa"
       ],
       "tecnologie": ["Illustrator", "Photoshop", "Behance"],
-      "immagine": "Web_Site/NOVUS_Calendar.jpg",
+      "immagine": "Img/Brand_Identity/Calendario_2024.png",
       "immagine_placeholder": "https://picsum.photos/seed/novus/600/400",
       "anno": 2024,
-      "colore": "#e85d1f",
-      "link": "https://www.behance.net/gallery/242424703/NOVUS-2024-Calendar"
+      "colore": "#e85d1f"
     }
   ],
   "_istruzioni": "\"link\" = URL completo del progetto (sito online o galleria Behance). \"codice\" = repository GitHub (facoltativo). \"dettagli\" = elenco puntato mostrato aprendo la card col \"+\". Le immagini vanno nella cartella Web_Site/: se mancano viene usato il placeholder."
