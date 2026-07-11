@@ -3,15 +3,23 @@
 // ============================================================
 require("dotenv").config();
 
+// Pulisce le credenziali: rimuove virgolette accidentali e spazi.
+// Le "Password per le app" di Google vengono mostrate come
+// "xxxx xxxx xxxx xxxx": gli spazi vanno rimossi, altrimenti
+// Gmail risponde 535 BadCredentials.
+function cleanEnv(v) {
+  return (v || "").trim().replace(/^["']|["']$/g, "");
+}
+
 module.exports = {
   port: process.env.PORT || 3000,
 
   smtp: {
-    host: process.env.SMTP_HOST,
+    host: cleanEnv(process.env.SMTP_HOST),
     port: parseInt(process.env.SMTP_PORT, 10) || 465,
     secure: process.env.SMTP_SECURE === "true",
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: cleanEnv(process.env.SMTP_USER),
+    pass: cleanEnv(process.env.SMTP_PASS).replace(/\s+/g, ""),
   },
 
   mailFrom: {

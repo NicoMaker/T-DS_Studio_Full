@@ -32,6 +32,21 @@ const transporter = nodemailer.createTransport({
     console.log("✅ SMTP pronto: le email possono essere inviate.");
   } catch (err) {
     console.error("❌ SMTP non configurato o non raggiungibile:", err.message);
+    if (err.code === "EAUTH" || /535/.test(err.message)) {
+      console.error(
+        "\n🔑 Credenziali rifiutate da Gmail. Checklist:\n" +
+          "   1. L'account deve avere la VERIFICA IN 2 PASSAGGI attiva.\n" +
+          "   2. Genera una 'Password per le app' su:\n" +
+          "      https://myaccount.google.com/apppasswords\n" +
+          "   3. Incollala in SMTP_PASS nel file .env (gli spazi vengono\n" +
+          "      rimossi automaticamente, ma dev'essere quella giusta e\n" +
+          "      generata per l'account indicato in SMTP_USER: " +
+          (config.smtp.user || "(vuoto)") +
+          ").\n" +
+          "   4. Se hai rigenerato la password di recente, attendi qualche\n" +
+          "      minuto e riavvia il server.\n",
+      );
+    }
   }
 })();
 
