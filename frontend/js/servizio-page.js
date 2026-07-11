@@ -36,12 +36,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", servizio.descrizione);
 
-    // Icona
+    // Icona / immagine di copertina
     const iconEl = document.getElementById("sd-icon");
     if (servizio.icona) {
       const isUrl = /^https?:\/\/|\//i.test(servizio.icona);
       if (isUrl) {
-        iconEl.innerHTML = `<img src="${servizio.icona}" alt="${servizio.titolo}" loading="lazy" class="servizio-icona-img" />`;
+        iconEl.innerHTML = `
+          <img src="${servizio.icona}" alt="" aria-hidden="true" class="sd-icon-bg" onerror="this.style.display='none'" />
+          <img src="${servizio.icona}" alt="${servizio.titolo}" loading="lazy" class="sd-icon-main" />`;
+        iconEl.setAttribute("data-lightbox-src", servizio.icona);
+        iconEl.setAttribute("data-lightbox-caption", servizio.titolo);
+        iconEl.setAttribute("role", "button");
+        iconEl.setAttribute("tabindex", "0");
+        iconEl.setAttribute(
+          "aria-label",
+          `Ingrandisci l'immagine di ${servizio.titolo}`,
+        );
       } else {
         iconEl.textContent = servizio.icona;
       }
@@ -122,8 +132,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           return `
         <div class="project-card" data-cat="${p.categoria}" data-search="${testoRicerca.replace(/"/g, "&quot;").toLowerCase()}">
-          <div class="project-img-wrap">
-            <img src="${p.immagine || p.immagine_placeholder}" alt="${p.titolo}" loading="lazy" onerror="this.onerror=null;this.src='${p.immagine_placeholder || ""}'">
+          <div class="project-img-wrap" data-lightbox-src="${p.immagine || p.immagine_placeholder}" data-lightbox-caption="${(p.titolo || "").replace(/"/g, "&quot;")}" role="button" tabindex="0" aria-label="Ingrandisci l'immagine di ${p.titolo}">
+            <img src="${p.immagine || p.immagine_placeholder}" alt="" aria-hidden="true" loading="lazy" class="project-img-bg" onerror="this.style.display='none'">
+            <img src="${p.immagine || p.immagine_placeholder}" alt="${p.titolo}" loading="lazy" class="project-img-main" onerror="this.onerror=null;this.src='${p.immagine_placeholder || ""}'">
+            <span class="project-img-zoom-badge" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
             <div class="project-overlay"></div>
           </div>
           <div class="project-body">
@@ -268,6 +282,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // ── Mostra contenuto ────────────────────────────────────
+    initImageLightbox(contentEl);
     loadingEl.style.display = "none";
     contentEl.style.display = "";
 
@@ -285,3 +300,80 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 window.addEventListener("load", scrollToCurrentHash);
+
+// ============================================================
+// Lightbox immagini — mostra l'immagine intera a schermo pieno
+// (mobile + desktop). Chiusura: X, click sullo sfondo, ESC.
+// ============================================================
+function initImageLightbox(scope) {
+  let lb = document.getElementById("img-lightbox");
+
+  if (!lb) {
+    lb = document.createElement("div");
+    lb.id = "img-lightbox";
+    lb.className = "img-lightbox";
+    lb.setAttribute("role", "dialog");
+    lb.setAttribute("aria-modal", "true");
+    lb.setAttribute("aria-label", "Immagine ingrandita");
+    lb.innerHTML = `
+      <button type="button" class="img-lightbox-close" aria-label="Chiudi immagine">✕</button>
+      <figure class="img-lightbox-figure">
+        <img class="img-lightbox-img" src="" alt="" />
+        <figcaption class="img-lightbox-caption"></figcaption>
+      </figure>
+    `;
+    document.body.appendChild(lb);
+
+    const imgEl = lb.querySelector(".img-lightbox-img");
+    const captionEl = lb.querySelector(".img-lightbox-caption");
+    const closeBtn = lb.querySelector(".img-lightbox-close");
+
+    const close = () => {
+      lb.classList.remove("open");
+      document.body.classList.remove("lightbox-open");
+      // svuota il src dopo la transizione per liberare memoria
+      setTimeout(() => {
+        if (!lb.classList.contains("open")) imgEl.src = "";
+      }, 350);
+    };
+
+    closeBtn.addEventListener("click", close);
+    lb.addEventListener("click", (e) => {
+      if (e.target === lb || e.target.closest(".img-lightbox-figure") === null)
+        close();
+    });
+    lb.querySelector(".img-lightbox-figure").addEventListener("click", (e) => {
+      // click sull'immagine non chiude, click intorno sì
+      if (e.target !== imgEl) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lb.classList.contains("open")) close();
+    });
+
+    lb._open = (src, caption) => {
+      imgEl.src = src;
+      imgEl.alt = caption || "";
+      captionEl.textContent = caption || "";
+      captionEl.style.display = caption ? "" : "none";
+      lb.classList.add("open");
+      document.body.classList.add("lightbox-open");
+      closeBtn.focus();
+    };
+  }
+
+  (scope || document)
+    .querySelectorAll("[data-lightbox-src]")
+    .forEach((trigger) => {
+      const open = () => {
+        const src = trigger.getAttribute("data-lightbox-src");
+        if (src) lb._open(src, trigger.getAttribute("data-lightbox-caption"));
+      };
+      trigger.addEventListener("click", open);
+      trigger.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
+    });
+}

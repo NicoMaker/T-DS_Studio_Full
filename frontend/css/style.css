@@ -1751,42 +1751,59 @@ button {
    ============================================================ */
 .servizio-detail-header {
   position: relative;
-  margin: 34px 0 40px;
-  padding: 46px 44px;
+  margin: 34px 0 48px;
+  padding: clamp(30px, 5vw, 56px);
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: clamp(28px, 4.5vw, 56px);
   background: var(--brand-black, #0a0a0a);
   color: #ffffff;
-  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: clamp(20px, 3vw, 30px);
   overflow: hidden;
+  box-shadow: 0 30px 80px rgba(10, 10, 10, 0.25);
 }
-/* Glow rosso brand nell'header nero, come le card identity */
+/* Glow rosso brand + trama sottile, stile card identity */
 .servizio-detail-header::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
-      520px circle at 12% 0%,
-      rgba(var(--accent-rgb), 0.35),
+      560px circle at 10% -10%,
+      rgba(var(--accent-rgb), 0.38),
+      transparent 62%
+    ),
+    radial-gradient(
+      460px circle at 102% 115%,
+      rgba(var(--accent-rgb), 0.24),
       transparent 60%
     ),
     radial-gradient(
-      420px circle at 100% 110%,
-      rgba(var(--accent-rgb), 0.22),
-      transparent 60%
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1.5px
     );
+  background-size:
+    auto,
+    auto,
+    26px 26px;
   pointer-events: none;
 }
+/* Hairline sfumata in alto al posto della barra piena */
 .servizio-detail-header::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 6px;
-  background: var(--accent);
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    rgba(var(--accent-rgb), 0.45) 45%,
+    transparent 85%
+  );
 }
 .servizio-detail-header > * {
   position: relative;
@@ -1818,29 +1835,58 @@ button {
   max-width: none;
   width: 100%;
 }
-/* Immagine servizio GRANDE nella pagina di dettaglio */
+/* Media servizio: pannello "vetro" con immagine SEMPRE intera
+   su sfondo sfocato della stessa immagine (ambient) */
 .servizio-detail-icon {
+  position: relative;
   flex-shrink: 0;
-  width: 210px;
-  height: 210px;
+  width: clamp(240px, 30vw, 360px);
+  aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
-  border-radius: 22px;
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: var(--accent-2);
-  margin-bottom: 0;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  cursor: zoom-in;
+  transition:
+    transform 0.5s var(--ease),
+    box-shadow 0.5s var(--ease);
+}
+.servizio-detail-icon:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 .servizio-detail-icon .material-icons {
   font-size: 92px;
+  color: var(--accent);
+}
+.servizio-detail-icon .sd-icon-bg {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  filter: blur(28px) saturate(1.2) brightness(0.75);
+  opacity: 0.75;
+  z-index: 0;
+  pointer-events: none;
 }
 .servizio-detail-icon .servizio-icona-img,
-.servizio-detail-icon img {
-  width: 76%;
-  height: 76%;
+.servizio-detail-icon .sd-icon-main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.25));
+  padding: 14px;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
 }
 .servizio-detail-title {
   font-family: var(--font-display);
@@ -1849,18 +1895,27 @@ button {
   letter-spacing: -0.03em;
   line-height: 1.05;
   margin-bottom: 16px;
-  color: #ffffff;
+  background: linear-gradient(180deg, #ffffff 55%, rgba(255, 255, 255, 0.68));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-/* Wordmark "T-DS studio" nell'header, come le card brand */
+/* Badge pill "T-DS studio" nell'header */
 .servizio-detail-header .servizio-detail-title::before {
   content: "T-DS studio";
   display: block;
-  font-size: 0.8rem;
+  width: fit-content;
+  font-size: 0.74rem;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 14px;
+  color: #ffffff;
+  -webkit-text-fill-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  border-radius: 999px;
+  padding: 7px 16px;
+  margin-bottom: 18px;
 }
 .servizio-detail-sub {
   color: rgba(255, 255, 255, 0.78);
@@ -1869,12 +1924,12 @@ button {
 }
 @media (max-width: 720px) {
   .servizio-detail-header {
-    padding: 34px 26px;
-    gap: 26px;
+    padding: 26px 22px 30px;
+    gap: 24px;
   }
   .servizio-detail-icon {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    aspect-ratio: 16 / 10;
   }
 }
 .servizio-detail-body {
@@ -2029,25 +2084,164 @@ button {
   display: flex;
   flex-direction: column;
 }
+/* ── Immagine progetto: sempre visibile per intero ─────────
+   L'immagine principale usa object-fit: contain (mai tagliata),
+   dietro c'è la stessa immagine sfocata come sfondo "ambient"
+   in stile moderno. Click/tap = lightbox a schermo intero. */
 .project-img-wrap {
   position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--panel-2);
+  cursor: zoom-in;
+  isolation: isolate;
 }
-.project-img-wrap img {
+.project-img-bg {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  object-fit: cover;
+  filter: blur(26px) saturate(1.15);
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.project-img-wrap .project-img-main {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 12px;
   transition: transform 0.7s var(--ease);
+  filter: drop-shadow(0 8px 22px rgba(10, 12, 18, 0.18));
 }
-.project-card:hover .project-img-wrap img {
-  transform: scale(1.06);
+.project-card:hover .project-img-wrap .project-img-main {
+  transform: scale(1.04);
 }
+.project-img-zoom-badge {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease);
+  pointer-events: none;
+}
+.project-card:hover .project-img-zoom-badge,
+.project-img-wrap:focus-visible .project-img-zoom-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Su touch il badge resta sempre visibile come invito al tap */
+@media (hover: none) {
+  .project-img-zoom-badge {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Lightbox immagine a schermo intero ──────────────────── */
+.img-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(10, 10, 12, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s var(--ease),
+    visibility 0.3s var(--ease);
+}
+.img-lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+.img-lightbox-figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: min(1100px, 100%);
+  max-height: 100%;
+}
+.img-lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100dvh - 140px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  transform: scale(0.94);
+  transition: transform 0.35s var(--ease-spring);
+}
+.img-lightbox.open .img-lightbox-img {
+  transform: scale(1);
+}
+.img-lightbox-caption {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.92rem;
+  text-align: center;
+  max-width: 60ch;
+}
+.img-lightbox-close {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  display: grid;
+  place-items: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    transform 0.25s var(--ease);
+}
+.img-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: rotate(90deg);
+}
+body.lightbox-open {
+  overflow: hidden;
+}
+
 .project-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(10, 12, 18, 0.3), transparent 50%);
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(10, 12, 18, 0.14), transparent 40%);
 }
 .project-body {
   position: relative;
@@ -2328,15 +2522,6 @@ button {
   transition: transform 0.4s var(--ease-spring);
 }
 
-/* Pagina dettaglio servizio */
-.servizio-detail-icon img,
-.servizio-detail-icon .servizio-icona-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.25));
-}
-
 /* Card servizi home */
 .servizio-icona-img {
   width: 100%;
@@ -2347,12 +2532,3 @@ button {
   transition: transform 0.4s var(--ease-spring);
 }
 
-/* Pagina dettaglio servizio */
-.servizio-detail-icon img,
-.servizio-detail-icon .servizio-icona-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.25));
-}
